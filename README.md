@@ -15,7 +15,6 @@ Allows students access a variety of property and accessories within their circle
 
 
 ### App Evaluation
-[Evaluation of your app across the following attributes]
 - **Category:** Productivity
 - **Mobile:** Mobile is essential checking the latest products with Location GPS. The camera is used to take pictures of items for sale.
 - **Story:** Easier transaction and more availability of student required items
