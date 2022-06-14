@@ -31,8 +31,7 @@ Allows students access a variety of property and accessories within their circle
 * Sign Up
 * Login and Log out
 * Post, View
-  * Original User can delete Listing
-  * Edit Listing
+  * Original User can delete Post
 
 **Optional Nice-to-have Stories**
 
