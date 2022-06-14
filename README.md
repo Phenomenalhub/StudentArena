@@ -68,7 +68,7 @@ Allows students access a variety of property and accessories within their circle
 
 ## Wireframes
 
-<img src="YOUR_WIREFRAME_IMAGE_URL" width=600>
+<img src="https://github.com/Phenomenalhub/StudentArena/blob/main/Wireframes.jpg?raw=true" width=600>
 
 
 ## Schema 
