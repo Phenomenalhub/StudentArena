@@ -40,29 +40,44 @@ Allows students access a variety of property and accessories within their circle
 
 ### 2. Screen Archetypes
 
+
+* [Splash Screen]
+
 * [Login Screen]
-   * Sign Up
-   * Login
+
+* [Sign up Screen]
+
 * [Main Screen]
    * Post, View
    * Search
    * Log Out
+
 * [Post Screen]
-  * Edit Listing
-  * Delete Listing
+   * Create a Post (Camera) 
+   * Description
+   * Login
+
+* [Profile Screen]
+  * View previous post listing
+  * Delete listing
 
 ### 3. Navigation
 
 **Tab Navigation** (Tab to Screen)
 
 * [Main Screen]
-   * Log Out
-   * Post
+   * Home feed
+   * Create a post
+   * Message
+   * Profile
 
 **Flow Navigation** (Screen to Screen)
 
 * [Login Screen]
    * [Main Screen]
+
+* [Home Screen]
+   * [Post Detail Screen]
 
 ## Wireframes
 
@@ -71,8 +86,49 @@ Allows students access a variety of property and accessories within their circle
 
 ## Schema 
 
-
 ### Models
-[Add table of models]
+
+#### Post
+
+   | Property      | Type     | Description |
+   | ------------- | -------- | ------------|
+   | objectId      | String   | unique id for the user post (default field) |
+   | author        | Pointer to User| image author |
+   | image         | File     | image of the listing |
+   | title  | String   | title of the item listing |
+   | description   | String   | description of the item listing |
+   | price     | String | amount of the item listing |
+   | contact     | String  | contact of the user |
+   | location   |GeoPoint | address where user posted a listing |
+   | createdAt     | DateTime | date when post is created (default field) |
+   | updatedAt     | DateTime | date when post is last updated (default field) |
+   
+
+### Profile
+
+| Property      | Type     | Description |
+   | ------------- | -------- | ------------|
+   | objectId      | String   | unique id for the user post (default field) |
+   | author        | Pointer to User| image author |
+   | image         | File     | image of the listing |
+   | title  | String   | title of the item listing |
+   | price     | String | amount of the item listing |
+   | createdAt     | DateTime | date when post is created (default field) |
+   | updatedAt     | DateTime | date when post is last updated (default field) |
+
+
+
+### Message
+
+| Property      | Type     | Description |
+   | ------------- | -------- | ------------|
+   | objectId      | String   | unique id for the user post (default field) |
+   | author        | Pointer to User| image author |
+   | image         | File     | image of the listing |
+   | userMessage  | String   | Message of the user |
+   | otherMessage   | String | Meessage of the other user |
+   | createdAt     | DateTime | date when message was sent (default field) |
+   | updatedAt     | DateTime | date when message was last updated (default field) |
+   
 ### Networking
 - 
