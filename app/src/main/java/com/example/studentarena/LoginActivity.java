@@ -33,8 +33,12 @@ public class LoginActivity extends AppCompatActivity {
                 Log.i(TAG, "onClick login button");
                 String username = etUsername.getText().toString();
                 String password = etPassword.getText().toString();
-                //loginUser  (username, password);
+                loginUser  (username, password);
             }
         });
     }
+    private void loginUser(String username, String password){
+        Log.i(TAG, "Attempting to login" + username);
+    }
+
 }
