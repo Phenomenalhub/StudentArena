@@ -86,8 +86,49 @@ Allows students access a variety of property and accessories within their circle
 
 ## Schema 
 
-
 ### Models
-[Add table of models]
+
+#### Post
+
+   | Property      | Type     | Description |
+   | ------------- | -------- | ------------|
+   | objectId      | String   | unique id for the user post (default field) |
+   | author        | Pointer to User| image author |
+   | image         | File     | image of the listing |
+   | title  | String   | title of the item listing |
+   | description   | String   | description of the item listing |
+   | price     | String | amount of the item listing |
+   | contact     | String  | contact of the user |
+   | location   |GeoPoint | address where user posted a listing |
+   | createdAt     | DateTime | date when post is created (default field) |
+   | updatedAt     | DateTime | date when post is last updated (default field) |
+   
+
+### Profile
+
+| Property      | Type     | Description |
+   | ------------- | -------- | ------------|
+   | objectId      | String   | unique id for the user post (default field) |
+   | author        | Pointer to User| image author |
+   | image         | File     | image of the listing |
+   | title  | String   | title of the item listing |
+   | price     | String | amount of the item listing |
+   | createdAt     | DateTime | date when post is created (default field) |
+   | updatedAt     | DateTime | date when post is last updated (default field) |
+
+
+
+### Message
+
+| Property      | Type     | Description |
+   | ------------- | -------- | ------------|
+   | objectId      | String   | unique id for the user post (default field) |
+   | author        | Pointer to User| image author |
+   | image         | File     | image of the listing |
+   | userMessage  | String   | Message of the user |
+   | otherMessage   | String | Meessage of the other user |
+   | createdAt     | DateTime | date when message was sent (default field) |
+   | updatedAt     | DateTime | date when message was last updated (default field) |
+   
 ### Networking
 - 
