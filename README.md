@@ -40,29 +40,44 @@ Allows students access a variety of property and accessories within their circle
 
 ### 2. Screen Archetypes
 
+
+* [Splash Screen]
+
 * [Login Screen]
-   * Sign Up
-   * Login
+
+* [Sign up Screen]
+
 * [Main Screen]
    * Post, View
    * Search
    * Log Out
+
 * [Post Screen]
-  * Edit Listing
-  * Delete Listing
+   * Create a Post (Camera) 
+   * Description
+   * Login
+
+* [Profile Screen]
+  * View previous post listing
+  * Delete listing
 
 ### 3. Navigation
 
 **Tab Navigation** (Tab to Screen)
 
 * [Main Screen]
-   * Log Out
-   * Post
+   * Home feed
+   * Create a post
+   * Message
+   * Profile
 
 **Flow Navigation** (Screen to Screen)
 
 * [Login Screen]
    * [Main Screen]
+
+* [Home Screen]
+   * [Post Detail Screen]
 
 ## Wireframes
 
