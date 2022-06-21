@@ -44,7 +44,6 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void signUpUser(String username, String password) {
         ParseUser user = new ParseUser();
-        // Set core properties
         user.setUsername(username);
         user.setPassword(password);
         // Invoke signUpInBackground
@@ -55,10 +54,7 @@ public class SignUpActivity extends AppCompatActivity {
                     Intent i = new Intent(SignUpActivity.this, MainActivity.class);
                     startActivity(i);
                     finish();
-                    // Show a toast to indicate user successfully signed up for an account
                 } else {
-                    // Sign up didn't succeed. Look at the ParseException
-                    // to figure out what went wrong
                     Toast.makeText(SignUpActivity.this, "Issue with Signup: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     return;
                 }
