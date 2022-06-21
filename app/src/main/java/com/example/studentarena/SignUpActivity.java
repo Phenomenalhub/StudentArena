@@ -17,6 +17,9 @@ import com.parse.SignUpCallback;
 public class SignUpActivity extends AppCompatActivity {
 
     public static final String TAG = "SignUpActivity";
+    private EditText etFirstName;
+    private EditText etLastName;
+    private EditText etEmail;
     private EditText etUsername;
     private EditText etPassword;
     private Button btnSignup;
@@ -30,20 +33,29 @@ public class SignUpActivity extends AppCompatActivity {
         }
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
+        etFirstName = findViewById(R.id.etFirstName);
+        etLastName = findViewById(R.id.etLastName);
+        etEmail = findViewById(R.id.etEmail);
         btnSignup = findViewById(R.id.btnSignup);
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i(TAG, "onClick login button");
+                String firstName = etFirstName.getText().toString();
+                String lastName = etLastName.getText().toString();
+                String email = etEmail.getText().toString();
                 String username = etUsername.getText().toString();
                 String password = etPassword.getText().toString();
-                signUpUser(username, password);
+                signUpUser(firstName, lastName, email, username, password);
             }
         });
     }
 
-    private void signUpUser(String username, String password) {
-        ParseUser user = new ParseUser();
+    private void signUpUser(String firstName, String lastName, String email, String username, String password) {
+        User user = new User();
+        user.setKeyFirstName(firstName);
+        user.setKeyLastName(lastName);
+        user.setEmail(email);
         user.setUsername(username);
         user.setPassword(password);
         // Invoke signUpInBackground
