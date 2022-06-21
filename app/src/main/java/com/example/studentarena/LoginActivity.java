@@ -45,7 +45,21 @@ public class LoginActivity extends AppCompatActivity {
                 loginUser  (username, password);
             }
         });
+
+        btnSignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(LoginActivity.this, SignUpActivity.class);
+                startActivity(i);
+            }
+        });
     }
+
+    private void signUpUser(){
+        Intent i = new Intent(this, SignUpActivity.class);
+        startActivity(i);
+    }
+
     private void loginUser(String username, String password){
         Log.i(TAG, "Attempting to login " + username);
         ParseUser.logInInBackground(username, password, new LogInCallback() {
