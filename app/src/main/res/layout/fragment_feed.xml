@@ -60,15 +60,17 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvPosts"
+        android:layout_width="402dp"
+        android:layout_height="668dp"
+        android:layout_centerInParent="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/postToolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/postToolbar"
+        app:layout_constraintVertical_bias="0.8" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
