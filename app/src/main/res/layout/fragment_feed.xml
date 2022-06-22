@@ -34,18 +34,18 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
-                android:id="@+id/imageButton"
+                android:id="@+id/ibSearch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:background="@color/white"
                 android:src="@drawable/ic_vector_search_stroke"
-                app:layout_constraintEnd_toStartOf="@+id/imageButton7"
+                app:layout_constraintEnd_toStartOf="@+id/ibLogout"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
-                android:id="@+id/imageButton7"
+                android:id="@+id/ibLogout"
                 android:layout_width="50dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="8dp"
