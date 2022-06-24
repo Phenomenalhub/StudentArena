@@ -65,7 +65,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         }
         public void bind(Post post) {
             // Bind the post data to the view elements
-            tvDescription.setText(post.getDescription());
+            //tvDescription.setText(post.getDescription());
             tvUsername.setText(post.getUser().getUsername());
             //tvCreatedAt.setText((post.getCreatedAt().toString()));
             ParseFile image = post.getImage();
