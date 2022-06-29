@@ -81,10 +81,6 @@ public class ComposeFragment extends Fragment {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                String description = etDescription.getText().toString();
-//                String contact = etContactinfo.getText().toString();
-//                String title = etTitle.getText().toString();
-//                String price = etPrice.getText().toString();
                 if (etDescription.getText().toString().isEmpty()){
                     Toast.makeText(getContext(),"Description cannot be empty", Toast.LENGTH_SHORT).show();
                     return;
@@ -94,7 +90,6 @@ public class ComposeFragment extends Fragment {
                     Toast.makeText(getContext(), "There is no image!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                //arseUser currentUser = ParseUser.getCurrentUser();
                 savePost ();
             }
         });
@@ -120,8 +115,6 @@ public class ComposeFragment extends Fragment {
                             .beginTransaction()
                             .replace(R.id.flContainer, new FeedFragment())
                             .commit();
-//                    etDescription.setText("");
-//                    ivPostImage.setImageResource(0);
                 }
             }
         });

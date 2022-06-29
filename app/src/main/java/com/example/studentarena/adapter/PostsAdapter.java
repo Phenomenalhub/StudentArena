@@ -54,31 +54,20 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        //private TextView tvUsername;
         private ImageView ivImage;
         private TextView tvPrice;
         private TextView tvTitle;
-        //private TextView tvDescription;
-        //private TextView tvCreatedAt;
-        //private ImageView ivProfileImage;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            //tvUsername = itemView.findViewById(R.id.tvUsername);
             ivImage = itemView.findViewById(R.id.ivImage);
             tvPrice = itemView.findViewById(R.id.tvPrice);
             tvTitle = itemView.findViewById(R.id.tvTitle);
-            //tvDescription = itemView.findViewById(R.id.tvDescription);
-            //tvCreatedAt = itemView.findViewById(R.id.tvCreatedAt);
-            //ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
         }
         public void bind(Post post) {
             // Bind the post data to the view elements
             tvTitle.setText(post.getTitle());
             tvPrice.setText(post.getPrice());
-            //tvDescription.setText(post.getDescription());
-            //tvUsername.setText(post.getUser().getUsername());
-            //tvCreatedAt.setText((post.getCreatedAt().toString()));
             ParseFile image = post.getImage();
             if (image != null) {
                 ivImage.setVisibility(View.VISIBLE);
