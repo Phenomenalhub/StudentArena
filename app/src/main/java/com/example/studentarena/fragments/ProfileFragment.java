@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
 import com.example.studentarena.LoginActivity;
 import com.example.studentarena.R;
 import com.example.studentarena.User;
@@ -73,7 +74,7 @@ public class ProfileFragment extends Fragment {
         ivProfileImage = view.findViewById(R.id.ivProfileImage);
         ParseFile userProfileImg = user.getProfileImage();
         if (userProfileImg != null) {
-            Glide.with(view).load(userProfileImg.getUrl()).centerCrop().circleCrop().into(ivProfileImage);
+            Glide.with(view).load(userProfileImg.getUrl()).centerCrop().circleCrop().override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).into(ivProfileImage);
         };
 
     }
@@ -102,6 +103,7 @@ public class ProfileFragment extends Fragment {
                 ivProfileImage.setImageBitmap(takenImage);
                 user.setProfileImage(new ParseFile(photoFile));
                 user.saveInBackground();
+
             } else { // Result was a failure
                 Toast.makeText(getContext(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }

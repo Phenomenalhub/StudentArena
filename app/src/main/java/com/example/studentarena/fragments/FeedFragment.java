@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -61,12 +62,16 @@ public class FeedFragment extends Fragment {
 
         rvPosts = view.findViewById(R.id.rvPosts);
         // initialize the array that will hold posts and create a PostsAdapter
+
+        StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        rvPosts.setLayoutManager(gridLayoutManager);
+
         allPosts = new ArrayList<>();
         adapter = new PostsAdapter(getContext(), allPosts);
         // set the adapter on the recycler view
         rvPosts.setAdapter(adapter);
         // set the layout manager on the recycler view
-        rvPosts.setLayoutManager(new LinearLayoutManager(getContext()));
+//        rvPosts.setLayoutManager(new LinearLayoutManager(getContext()));
         queryPosts();
     }
 
@@ -76,7 +81,6 @@ public class FeedFragment extends Fragment {
         // include data referred by user key
         query.include(Post.KEY_USER);
         query.setLimit(20);
-        //query.whereEqualTo("user", ParseUser.getCurrentUser());
         // order posts by creation date (newest first)
         query.addDescendingOrder("createdAt");
         // start an asynchronous call for posts
