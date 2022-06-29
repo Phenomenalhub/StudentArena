@@ -14,10 +14,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.example.studentarena.DetailActivity;
 import com.example.studentarena.Post;
 import com.example.studentarena.R;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -49,40 +54,47 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView tvUsername;
+        //private TextView tvUsername;
         private ImageView ivImage;
-        private TextView tvDescription;
+        private TextView tvPrice;
+        private TextView tvTitle;
+        //private TextView tvDescription;
         //private TextView tvCreatedAt;
-        private ImageView ivProfileImage;
+        //private ImageView ivProfileImage;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvUsername = itemView.findViewById(R.id.tvUsername);
+            //tvUsername = itemView.findViewById(R.id.tvUsername);
             ivImage = itemView.findViewById(R.id.ivImage);
-            tvDescription = itemView.findViewById(R.id.tvDescription);
+            tvPrice = itemView.findViewById(R.id.tvPrice);
+            tvTitle = itemView.findViewById(R.id.tvTitle);
+            //tvDescription = itemView.findViewById(R.id.tvDescription);
             //tvCreatedAt = itemView.findViewById(R.id.tvCreatedAt);
-            ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
+            //ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
         }
         public void bind(Post post) {
             // Bind the post data to the view elements
+            tvTitle.setText(post.getTitle());
+            tvPrice.setText(post.getPrice());
             //tvDescription.setText(post.getDescription());
-            tvUsername.setText(post.getUser().getUsername());
+            //tvUsername.setText(post.getUser().getUsername());
             //tvCreatedAt.setText((post.getCreatedAt().toString()));
             ParseFile image = post.getImage();
             if (image != null) {
                 ivImage.setVisibility(View.VISIBLE);
-                Glide.with(context).load(image.getUrl()).into(ivImage);
+                Glide.with(context).load(image.getUrl()).transform(new CenterCrop(),new RoundedCorners(25)).into(ivImage);
             } else{
                 ivImage.setVisibility(View.GONE);
             }
-            ParseFile imageProfile = post.getUser().getProfileImage();
+            ivImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(context, DetailActivity.class);
 
-            if (imageProfile != null) {
-                ivProfileImage.setVisibility(View.VISIBLE);
-                Glide.with(context).load(imageProfile.getUrl()).centerCrop().circleCrop().into(ivProfileImage);
-            } else{
-                ivProfileImage.setVisibility(View.GONE);
-            }
+                    i.putExtra("Posts", Parcels.wrap(post));
+                    context.startActivity(i);
+                }
+            });
         }
     }
 }

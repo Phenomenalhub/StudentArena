@@ -8,27 +8,29 @@
 
 
     <EditText
-        android:id="@+id/etZipcode"
-        android:layout_width="131dp"
-        android:layout_height="46dp"
-        android:layout_marginStart="8dp"
-        android:gravity="start|top"
-        android:hint="Zip Code"
-        android:inputType="textMultiLine"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/etState"
-        app:layout_constraintTop_toBottomOf="@+id/etAddress" />
-
-    <EditText
-        android:id="@+id/etCity"
-        android:layout_width="131dp"
-        android:layout_height="46dp"
+        android:id="@+id/etTitle"
+        android:layout_width="406dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="24dp"
         android:ems="10"
         android:gravity="start|top"
-        android:hint="City"
+        android:hint="Title"
         android:inputType="textMultiLine"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etAddress" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/etPrice"
+        android:layout_width="406dp"
+        android:layout_height="47dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="Price"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etTitle" />
 
     <EditText
         android:id="@+id/etDescription"
@@ -42,17 +44,64 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etPrice" />
 
-    <Button
-        android:id="@+id/btnSubmit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:backgroundTint="#03A9F4"
-        android:text="Post Item"
+    <EditText
+        android:id="@+id/etAddress"
+        android:layout_width="407dp"
+        android:layout_height="47dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="Street address"
+        android:inputType="textMultiLine"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivPostImage" />
+        app:layout_constraintTop_toBottomOf="@+id/etDescription" />
+
+    <EditText
+        android:id="@+id/etCity"
+        android:layout_width="131dp"
+        android:layout_height="46dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="City"
+        android:inputType="textMultiLine"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etAddress" />
+
+    <EditText
+        android:id="@+id/etState"
+        android:layout_width="131dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="8dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="State"
+        android:inputType="textMultiLine"
+        app:layout_constraintStart_toEndOf="@+id/etCity"
+        app:layout_constraintTop_toBottomOf="@+id/etAddress" />
+
+    <EditText
+        android:id="@+id/etZipcode"
+        android:layout_width="131dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="8dp"
+        android:gravity="start|top"
+        android:hint="Zip Code"
+        android:inputType="textMultiLine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/etState"
+        app:layout_constraintTop_toBottomOf="@+id/etAddress" />
+
+    <EditText
+        android:id="@+id/etContactinfo"
+        android:layout_width="408dp"
+        android:layout_height="44dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="Contact Information"
+        android:inputType="textMultiLine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etState" />
 
     <Button
         android:id="@+id/btnCaptureImage"
@@ -76,66 +125,16 @@
         app:layout_constraintTop_toBottomOf="@+id/btnCaptureImage"
         tools:srcCompat="@tools:sample/avatars" />
 
-    <EditText
-        android:id="@+id/etTitle"
-        android:layout_width="406dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="24dp"
-        android:ems="10"
-        android:gravity="start|top"
-        android:hint="Title"
-        android:inputType="textMultiLine"
+    <Button
+        android:id="@+id/btnSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="#03A9F4"
+        android:text="Post Item"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/etPrice"
-        android:layout_width="406dp"
-        android:layout_height="47dp"
-        android:ems="10"
-        android:gravity="start|top"
-        android:hint="Price"
-        android:inputType="textMultiLine"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etTitle" />
-
-    <EditText
-        android:id="@+id/etAddress"
-        android:layout_width="407dp"
-        android:layout_height="47dp"
-        android:ems="10"
-        android:gravity="start|top"
-        android:hint="Street address"
-        android:inputType="textMultiLine"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etDescription" />
-
-    <EditText
-        android:id="@+id/etState"
-        android:layout_width="131dp"
-        android:layout_height="46dp"
-        android:layout_marginStart="8dp"
-        android:ems="10"
-        android:gravity="start|top"
-        android:hint="State"
-        android:inputType="textMultiLine"
-        app:layout_constraintStart_toEndOf="@+id/etCity"
-        app:layout_constraintTop_toBottomOf="@+id/etAddress" />
-
-    <EditText
-        android:id="@+id/etContactinfo"
-        android:layout_width="408dp"
-        android:layout_height="44dp"
-        android:ems="10"
-        android:gravity="start|top"
-        android:hint="Contact Information"
-        android:inputType="textMultiLine"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etState" />
-
+        app:layout_constraintTop_toBottomOf="@+id/ivPostImage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

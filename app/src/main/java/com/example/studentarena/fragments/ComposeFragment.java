@@ -34,7 +34,7 @@ import com.parse.SaveCallback;
 import java.io.File;
 
 public class ComposeFragment extends Fragment {
-    public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE =  42;
+    public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE =  200;
     private static final String TAG = "ComposeFragment";
     private EditText etDescription;
     private EditText etContactinfo;
@@ -48,7 +48,7 @@ public class ComposeFragment extends Fragment {
     private ImageView ivPostImage;
     private Button btnSubmit;
     private File photoFile;
-    public String photoFileName = "photo.jpg";
+    public String photoFileName = "profilephoto.jpg";
 
     public ComposeFragment() {
     }
@@ -81,11 +81,11 @@ public class ComposeFragment extends Fragment {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String description = etDescription.getText().toString();
-                String contact = etContactinfo.getText().toString();
-                String title = etTitle.getText().toString();
-                String price = etPrice.getText().toString();
-                if (description.isEmpty()){
+//                String description = etDescription.getText().toString();
+//                String contact = etContactinfo.getText().toString();
+//                String title = etTitle.getText().toString();
+//                String price = etPrice.getText().toString();
+                if (etDescription.getText().toString().isEmpty()){
                     Toast.makeText(getContext(),"Description cannot be empty", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -94,20 +94,20 @@ public class ComposeFragment extends Fragment {
                     Toast.makeText(getContext(), "There is no image!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                ParseUser currentUser = ParseUser.getCurrentUser();
-                savePost (description, contact, title, price, currentUser, photoFile);
+                //arseUser currentUser = ParseUser.getCurrentUser();
+                savePost ();
             }
         });
     }
 
-    private void savePost(String description, String contact, String title, String price, ParseUser currentUser, File photoFile) {
+    private void savePost() {
         Post post = new Post();
-        post.setDescription(description);
-        post.setContact(contact);
-        post.setPrice(price);
-        post.setTitle(title);
+        post.setDescription(etDescription.getText().toString());
+        post.setContact(etContactinfo.getText().toString());
+        post.setPrice(etPrice.getText().toString());
+        post.setTitle(etTitle.getText().toString());
         post.setImage(new ParseFile(photoFile));
-        post.setUser((User) currentUser);
+        post.setUser((User)ParseUser.getCurrentUser());
         post.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
