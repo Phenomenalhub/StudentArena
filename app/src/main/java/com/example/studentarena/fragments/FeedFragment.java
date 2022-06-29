@@ -76,7 +76,6 @@ public class FeedFragment extends Fragment {
         // include data referred by user key
         query.include(Post.KEY_USER);
         query.setLimit(20);
-        //query.whereEqualTo("user", ParseUser.getCurrentUser());
         // order posts by creation date (newest first)
         query.addDescendingOrder("createdAt");
         // start an asynchronous call for posts

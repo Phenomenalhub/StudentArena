@@ -29,7 +29,7 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         if (ParseUser.getCurrentUser() != null){
-            goLoginActivity();
+            goMainActivity();
         }
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
@@ -74,7 +74,7 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-    private void goLoginActivity() {
+    private void goMainActivity() {
         Intent i = new Intent(this, LoginActivity.class);
         startActivity(i);
         finish();

@@ -21,7 +21,6 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnLogin;
     private Button btnSignup;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,11 +52,6 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-    }
-
-    private void signUpUser(){
-        Intent i = new Intent(this, SignUpActivity.class);
-        startActivity(i);
     }
 
     private void loginUser(String username, String password){
