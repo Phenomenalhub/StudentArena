@@ -71,8 +71,13 @@ public class FeedFragment extends Fragment {
     }
 
     private void queryPosts() {
-        // specify what type of data we want to query - Post.class, include data referred by user key
-        ParseQuery<Post> query = ParseQuery.getQuery(Post.class).include(Post.KEY_USER).setLimit(20).addDescendingOrder("createdAt");
+        // specify what type of data we want to query - Post.class
+        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
+        // include data referred by user key
+        query.include(Post.KEY_USER);
+        query.setLimit(20);
+        // order posts by creation date (newest first)
+        query.addDescendingOrder("createdAt");
         // start an asynchronous call for posts
         query.findInBackground(new FindCallback<Post>() {
             @Override
