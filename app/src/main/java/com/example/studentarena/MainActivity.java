@@ -19,13 +19,6 @@ import com.example.studentarena.fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
-
-    // https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=YOUR_API_KEY
-
-    //String Address = "", state = "", city = "";
-
-    //String getLocationRequest = "https://maps.googleapis.com/maps/api/geocode/json?address=" + Address + ",+" + state;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
