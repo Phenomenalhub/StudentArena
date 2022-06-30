@@ -9,10 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -21,9 +19,7 @@ import com.example.studentarena.Post;
 import com.example.studentarena.R;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
-
 import org.parceler.Parcels;
-
 import java.util.List;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
@@ -54,31 +50,20 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        //private TextView tvUsername;
         private ImageView ivImage;
         private TextView tvPrice;
         private TextView tvTitle;
-        //private TextView tvDescription;
-        //private TextView tvCreatedAt;
-        //private ImageView ivProfileImage;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            //tvUsername = itemView.findViewById(R.id.tvUsername);
             ivImage = itemView.findViewById(R.id.ivImage);
             tvPrice = itemView.findViewById(R.id.tvPrice);
             tvTitle = itemView.findViewById(R.id.tvTitle);
-            //tvDescription = itemView.findViewById(R.id.tvDescription);
-            //tvCreatedAt = itemView.findViewById(R.id.tvCreatedAt);
-            //ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
         }
         public void bind(Post post) {
             // Bind the post data to the view elements
             tvTitle.setText(post.getTitle());
-            tvPrice.setText(post.getPrice());
-            //tvDescription.setText(post.getDescription());
-            //tvUsername.setText(post.getUser().getUsername());
-            //tvCreatedAt.setText((post.getCreatedAt().toString()));
+            tvPrice.setText("$" + post.getPrice());
             ParseFile image = post.getImage();
             if (image != null) {
                 ivImage.setVisibility(View.VISIBLE);

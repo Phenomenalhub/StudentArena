@@ -10,6 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -19,25 +22,37 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
 import com.example.studentarena.LoginActivity;
+import com.example.studentarena.Post;
 import com.example.studentarena.R;
 import com.example.studentarena.User;
+import com.example.studentarena.adapter.PostsAdapter;
+import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProfileFragment extends Fragment {
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE1 = 42;
     private static final String TAG = "ProfileFragment";
     private ImageView ivProfileImage;
+    private TextView tvUsername;
     private File photoFile;
     public String photoFileName = "photo.jpg";
     private User user = (User) ParseUser.getCurrentUser();
-
+    RecyclerView rvPosts;
+    protected PostsAdapter adapter;
+    protected List<Post> allPosts;
     private static final String KEY_PROFILE_IMAGE = "profile_image";
 
     public ProfileFragment() {
@@ -62,7 +77,6 @@ public class ProfileFragment extends Fragment {
         view.findViewById(R.id.tvLogout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Log user out
                 ParseUser.logOut();
                 ParseUser currentUser = ParseUser.getCurrentUser();
                 Intent i = new Intent(getContext(), LoginActivity.class);
@@ -70,12 +84,22 @@ public class ProfileFragment extends Fragment {
                 getActivity().finish();
             }
         });
+        tvUsername = view.findViewById(R.id.tvUsername);
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        tvUsername.setText(currentUser.getUsername());
         ivProfileImage = view.findViewById(R.id.ivProfileImage);
         ParseFile userProfileImg = user.getProfileImage();
         if (userProfileImg != null) {
-            Glide.with(view).load(userProfileImg.getUrl()).centerCrop().circleCrop().into(ivProfileImage);
+            Glide.with(view).load(userProfileImg.getUrl()).centerCrop().circleCrop().override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).into(ivProfileImage);
         };
 
+        rvPosts =view.findViewById(R.id.rvPosts);
+        allPosts = new ArrayList<>();
+        adapter = new PostsAdapter(getContext(), allPosts);
+        // set the adapter on the recycler view
+        rvPosts.setAdapter(adapter);
+        rvPosts.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        queryPosts();
     }
 
     private void launchCamera() {
@@ -102,7 +126,8 @@ public class ProfileFragment extends Fragment {
                 ivProfileImage.setImageBitmap(takenImage);
                 user.setProfileImage(new ParseFile(photoFile));
                 user.saveInBackground();
-            } else { // Result was a failure
+
+            } else {
                 Toast.makeText(getContext(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }
         }
@@ -116,5 +141,32 @@ public class ProfileFragment extends Fragment {
         }
         // Return the file target for the photo based on filename
         return new File(mediaStorageDir.getPath() + File.separator + filename);
+    }
+
+    private void queryPosts() {
+        allPosts.clear();
+        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
+        // include data referred by user key
+        query.include(Post.KEY_USER);
+        // limit query to latest 20 items
+        query.setLimit(20);
+        query.whereEqualTo("user", ParseUser.getCurrentUser());
+        query.addDescendingOrder("createdAt");
+        query.findInBackground(new FindCallback<Post>() {
+            @Override
+            public void done(List<Post> posts, ParseException e) {
+                // check for errors
+                if (e != null) {
+                    Log.e(TAG, "Issue with getting posts", e);
+                    return;
+                }
+                for (Post post : posts) {
+                    Log.i(TAG, "Post: " + post.getDescription() + ", username: " + post.getUser().getUsername());
+                }
+                // save received posts to list and notify adapter of new data
+                allPosts.addAll(posts);
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 }
