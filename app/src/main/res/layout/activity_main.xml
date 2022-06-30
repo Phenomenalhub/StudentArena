@@ -6,6 +6,22 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+<!--    <GridView xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--        android:id="@+id/grid_view"-->
+<!--        android:layout_width="fill_parent"-->
+<!--        android:layout_height="fill_parent"-->
+<!--        android:numColumns="2"-->
+<!--        android:columnWidth="90dp"-->
+<!--        android:horizontalSpacing="10dp"-->
+<!--        android:verticalSpacing="10dp"-->
+<!--        android:gravity="center"-->
+<!--        android:stretchMode="columnWidth"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent">-->
+<!--    </GridView>-->
+
     <FrameLayout
         android:id="@+id/flContainer"
         android:layout_width="match_parent"
