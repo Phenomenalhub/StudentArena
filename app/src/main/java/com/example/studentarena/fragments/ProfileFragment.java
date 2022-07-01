@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -45,6 +46,7 @@ import java.util.List;
 public class ProfileFragment extends Fragment {
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE1 = 42;
     private static final String TAG = "ProfileFragment";
+    private SwipeRefreshLayout swipeContainer;
     private ImageView ivProfileImage;
     private TextView tvUsername;
     private File photoFile;
@@ -100,6 +102,20 @@ public class ProfileFragment extends Fragment {
         rvPosts.setAdapter(adapter);
         rvPosts.setLayoutManager(new GridLayoutManager(getContext(), 2));
         queryPosts();
+
+        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                queryPosts();
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
     }
 
     private void launchCamera() {
@@ -147,11 +163,7 @@ public class ProfileFragment extends Fragment {
         allPosts.clear();
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         // include data referred by user key
-        query.include(Post.KEY_USER);
-        // limit query to latest 20 items
-        query.setLimit(20);
-        query.whereEqualTo("user", ParseUser.getCurrentUser());
-        query.addDescendingOrder("createdAt");
+        query.include(Post.KEY_USER).setLimit(20).whereEqualTo("user", ParseUser.getCurrentUser()).addDescendingOrder("createdAt");
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> posts, ParseException e) {
@@ -165,6 +177,7 @@ public class ProfileFragment extends Fragment {
                 }
                 // save received posts to list and notify adapter of new data
                 allPosts.addAll(posts);
+                swipeContainer.setRefreshing(false);
                 adapter.notifyDataSetChanged();
             }
         });

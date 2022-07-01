@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,6 +33,7 @@ import java.util.List;
 
 public class FeedFragment extends Fragment {
     private static final String TAG = "Feed Fragment";
+    private SwipeRefreshLayout swipeContainer;
     RecyclerView rvPosts;
     protected PostsAdapter adapter;
     protected List<Post> allPosts;
@@ -69,16 +71,27 @@ public class FeedFragment extends Fragment {
         // set the adapter on the recycler view
         rvPosts.setAdapter(adapter);
         queryPosts();
+        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                queryPosts();
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
     }
 
     private void queryPosts() {
+        allPosts.clear();
         // specify what type of data we want to query - Post.class
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         // include data referred by user key
-        query.include(Post.KEY_USER);
-        query.setLimit(20);
-        // order posts by creation date (newest first)
-        query.addDescendingOrder("createdAt");
+        query.include(Post.KEY_USER).setLimit(20).addDescendingOrder("createdAt");
         // start an asynchronous call for posts
         query.findInBackground(new FindCallback<Post>() {
             @Override
@@ -92,6 +105,7 @@ public class FeedFragment extends Fragment {
                 }
                 // save received posts to list and notify adapter of new data
                 allPosts.addAll(posts);
+                swipeContainer.setRefreshing(false);// swipeContainer.setRefreshing(false) once the network request has completed successfully.
                 adapter.notifyDataSetChanged();
             }
         });
