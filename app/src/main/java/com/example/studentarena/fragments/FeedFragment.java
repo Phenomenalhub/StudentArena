@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.example.studentarena.EndlessRecyclerViewScrollListener;
 import com.example.studentarena.LoginActivity;
 import com.example.studentarena.Post;
 import com.example.studentarena.R;
@@ -32,6 +33,7 @@ import java.util.List;
 
 public class FeedFragment extends Fragment {
     private static final String TAG = "Feed Fragment";
+    public EndlessRecyclerViewScrollListener scrollListener;
     RecyclerView rvPosts;
     protected PostsAdapter adapter;
     protected List<Post> allPosts;
@@ -68,15 +70,23 @@ public class FeedFragment extends Fragment {
         adapter = new PostsAdapter(getContext(), allPosts);
         // set the adapter on the recycler view
         rvPosts.setAdapter(adapter);
-        queryPosts();
+        scrollListener = new EndlessRecyclerViewScrollListener(gridLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                queryPosts(allPosts.size());
+            }
+        };
+        rvPosts.addOnScrollListener(scrollListener);
+        queryPosts(0);
     }
 
-    private void queryPosts() {
+    private void queryPosts(int skip) {
         // specify what type of data we want to query - Post.class
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         // include data referred by user key
         query.include(Post.KEY_USER);
         query.setLimit(20);
+        query.setSkip(skip);
         // order posts by creation date (newest first)
         query.addDescendingOrder("createdAt");
         // start an asynchronous call for posts

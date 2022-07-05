@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -27,6 +28,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
+import com.example.studentarena.EndlessRecyclerViewScrollListener;
 import com.example.studentarena.LoginActivity;
 import com.example.studentarena.Post;
 import com.example.studentarena.R;
@@ -45,6 +47,7 @@ import java.util.List;
 public class ProfileFragment extends Fragment {
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE1 = 42;
     private static final String TAG = "ProfileFragment";
+    public EndlessRecyclerViewScrollListener scrollListener;
     private ImageView ivProfileImage;
     private TextView tvUsername;
     private File photoFile;
@@ -94,12 +97,20 @@ public class ProfileFragment extends Fragment {
         };
 
         rvPosts =view.findViewById(R.id.rvPosts);
+        StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        rvPosts.setLayoutManager(gridLayoutManager);
         allPosts = new ArrayList<>();
         adapter = new PostsAdapter(getContext(), allPosts);
         // set the adapter on the recycler view
         rvPosts.setAdapter(adapter);
-        rvPosts.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        queryPosts();
+        scrollListener = new EndlessRecyclerViewScrollListener(gridLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                queryPosts(allPosts.size());
+            }
+        };
+        rvPosts.addOnScrollListener(scrollListener);
+        queryPosts(0);
     }
 
     private void launchCamera() {
@@ -143,15 +154,11 @@ public class ProfileFragment extends Fragment {
         return new File(mediaStorageDir.getPath() + File.separator + filename);
     }
 
-    private void queryPosts() {
-        allPosts.clear();
+    private void queryPosts(int skip) {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         // include data referred by user key
-        query.include(Post.KEY_USER);
-        // limit query to latest 20 items
-        query.setLimit(20);
-        query.whereEqualTo("user", ParseUser.getCurrentUser());
-        query.addDescendingOrder("createdAt");
+        query.include(Post.KEY_USER).setLimit(20).setSkip(skip).whereEqualTo("user", ParseUser.getCurrentUser())
+                .addDescendingOrder("createdAt");
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> posts, ParseException e) {
