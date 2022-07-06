@@ -73,7 +73,7 @@ public class FeedFragment extends Fragment {
         scrollListener = new EndlessRecyclerViewScrollListener(gridLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                queryPosts(allPosts.size());
+                queryPosts(totalItemsCount);
             }
         };
         rvPosts.addOnScrollListener(scrollListener);
