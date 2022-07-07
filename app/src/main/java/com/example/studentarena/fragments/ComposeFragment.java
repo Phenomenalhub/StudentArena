@@ -110,7 +110,7 @@ public class ComposeFragment extends Fragment {
         });
     }
 
-    private void convertAddressToCordinates(String addressURL){
+    private void convertAddressToCoordinates(String addressURL, Post post){
         String url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + addressURL.replace(' ', '+') + "&key=AIzaSyAQT2qoV0i1ChpSlJqjbtBb4x6I-XfRDb8";
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
@@ -124,6 +124,13 @@ public class ComposeFragment extends Fragment {
                 //coordinate = location.getAsJsonPrimitive("lat").getAsDouble()+ "," +location.getAsJsonPrimitive("lng").getAsDouble();
                 latitude = location.getAsJsonPrimitive("lat").getAsFloat();
                 longitude = location.getAsJsonPrimitive("lng").getAsFloat();
+                post.setLocation(new ParseGeoPoint(latitude, longitude));
+                post.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+
+                    }
+                });
             }
         }, new Response.ErrorListener() {
             @Override
@@ -143,24 +150,24 @@ public class ComposeFragment extends Fragment {
         post.setImage(new ParseFile(photoFile));
         String address = etAddress.getText().toString()+","+ etCity.getText().toString()+","+ etState.getText().toString()+","+ etZipcode.getText().toString();
         post.setAddress(address);
-        convertAddressToCordinates(address);
-        Handler h = new Handler();
-        h.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // TODO: save coordinates, remember to split by ","
-                //Log.i(TAG, coordinate);
-                Log.i(TAG, longitude.toString());
-                Log.i(TAG, latitude.toString());
-                post.setLocation(new ParseGeoPoint(latitude, longitude));
-                post.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-
-                    }
-                });
-            }
-        }, 3000);
+        convertAddressToCoordinates(address, post);
+//        Handler h = new Handler();
+//        h.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                // TODO: save coordinates, remember to split by ","
+//                //Log.i(TAG, coordinate);
+//                Log.i(TAG, longitude.toString());
+//                Log.i(TAG, latitude.toString());
+//                post.setLocation(new ParseGeoPoint(latitude, longitude));
+////                post.saveInBackground(new SaveCallback() {
+////                    @Override
+////                    public void done(ParseException e) {
+////
+////                    }
+////                });
+//            }
+//        }, 3000);
         post.setUser((User)ParseUser.getCurrentUser());
         post.saveInBackground(new SaveCallback() {
             @Override
