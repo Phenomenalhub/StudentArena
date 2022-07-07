@@ -73,7 +73,9 @@ public class FeedFragment extends Fragment {
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                queryPosts();
+                allPosts.clear();
+                adapter.notifyDataSetChanged();
+                queryPosts(0);
             }
         });
         // Configure the refreshing colors
@@ -99,8 +101,7 @@ public class FeedFragment extends Fragment {
         ParseQuery.getQuery(Post.class)
                 .include(Post.KEY_USER)
                 .setLimit(20)
-                .setSkip(skip);
-                .whereEqualTo("user", ParseUser.getCurrentUser())
+                .setSkip(skip)
                 .addDescendingOrder("createdAt")
                 .findInBackground(new FindCallback<Post>() {
             @Override

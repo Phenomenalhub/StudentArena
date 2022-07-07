@@ -105,7 +105,7 @@ public class ProfileFragment extends Fragment {
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                queryPosts();
+                queryPosts(0);
             }
         });
         // Configure the refreshing colors
