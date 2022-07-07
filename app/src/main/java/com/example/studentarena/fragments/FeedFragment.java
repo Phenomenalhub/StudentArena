@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,6 +35,7 @@ import java.util.List;
 public class FeedFragment extends Fragment {
     private static final String TAG = "Feed Fragment";
     public EndlessRecyclerViewScrollListener scrollListener;
+    private SwipeRefreshLayout swipeContainer;
     RecyclerView rvPosts;
     protected PostsAdapter adapter;
     protected List<Post> allPosts;
@@ -66,6 +68,19 @@ public class FeedFragment extends Fragment {
         // initialize the array that will hold posts and create a PostsAdapter
         StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         rvPosts.setLayoutManager(gridLayoutManager);
+        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                queryPosts();
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
         allPosts = new ArrayList<>();
         adapter = new PostsAdapter(getContext(), allPosts);
         // set the adapter on the recycler view
@@ -79,18 +94,15 @@ public class FeedFragment extends Fragment {
         rvPosts.addOnScrollListener(scrollListener);
         queryPosts(0);
     }
-
     private void queryPosts(int skip) {
         // specify what type of data we want to query - Post.class
-        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-        // include data referred by user key
-        query.include(Post.KEY_USER);
-        query.setLimit(20);
-        query.setSkip(skip);
-        // order posts by creation date (newest first)
-        query.addDescendingOrder("createdAt");
-        // start an asynchronous call for posts
-        query.findInBackground(new FindCallback<Post>() {
+        ParseQuery.getQuery(Post.class)
+                .include(Post.KEY_USER)
+                .setLimit(20)
+                .setSkip(skip);
+                .whereEqualTo("user", ParseUser.getCurrentUser())
+                .addDescendingOrder("createdAt")
+                .findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> posts, ParseException e) {
                 if (e != null) {
@@ -102,6 +114,7 @@ public class FeedFragment extends Fragment {
                 }
                 // save received posts to list and notify adapter of new data
                 allPosts.addAll(posts);
+                swipeContainer.setRefreshing(false);// swipeContainer.setRefreshing(false) once the network request has completed successfully.
                 adapter.notifyDataSetChanged();
             }
         });

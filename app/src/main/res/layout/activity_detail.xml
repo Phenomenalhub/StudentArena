@@ -22,12 +22,12 @@
             android:id="@+id/ivImage"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:layout_marginTop="21dp"
+            android:layout_marginTop="12dp"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvUsername"
+            app:layout_constraintTop_toBottomOf="@+id/tvCreatedAt"
             tools:srcCompat="@tools:sample/avatars" />
 
         <ImageView
@@ -47,6 +47,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvContactInfo"
             tools:text="Welcome to student arena" />
+
+        <TextView
+            android:id="@+id/tvCreatedAt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:text="-:-:-"
+            app:layout_constraintBottom_toTopOf="@+id/ivImage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivProfileImage" />
 
         <TextView
             android:id="@+id/tvTitle"

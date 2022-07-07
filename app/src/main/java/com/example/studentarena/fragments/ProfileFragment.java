@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -48,6 +48,7 @@ public class ProfileFragment extends Fragment {
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE1 = 42;
     private static final String TAG = "ProfileFragment";
     public EndlessRecyclerViewScrollListener scrollListener;
+    private SwipeRefreshLayout swipeContainer;
     private ImageView ivProfileImage;
     private TextView tvUsername;
     private File photoFile;
@@ -99,6 +100,19 @@ public class ProfileFragment extends Fragment {
         rvPosts =view.findViewById(R.id.rvPosts);
         StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         rvPosts.setLayoutManager(gridLayoutManager);
+        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                queryPosts();
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
         allPosts = new ArrayList<>();
         adapter = new PostsAdapter(getContext(), allPosts);
         // set the adapter on the recycler view
@@ -153,13 +167,14 @@ public class ProfileFragment extends Fragment {
         // Return the file target for the photo based on filename
         return new File(mediaStorageDir.getPath() + File.separator + filename);
     }
-
     private void queryPosts(int skip) {
-        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-        // include data referred by user key
-        query.include(Post.KEY_USER).setLimit(20).setSkip(skip).whereEqualTo("user", ParseUser.getCurrentUser())
-                .addDescendingOrder("createdAt");
-        query.findInBackground(new FindCallback<Post>() {
+        ParseQuery.getQuery(Post.class)
+                .include(Post.KEY_USER)
+                .setLimit(20)
+                .setSkip(skip)
+                .whereEqualTo("user", ParseUser.getCurrentUser())
+                .addDescendingOrder("createdAt")
+                .findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> posts, ParseException e) {
                 // check for errors
@@ -172,6 +187,7 @@ public class ProfileFragment extends Fragment {
                 }
                 // save received posts to list and notify adapter of new data
                 allPosts.addAll(posts);
+                swipeContainer.setRefreshing(false);
                 adapter.notifyDataSetChanged();
             }
         });
