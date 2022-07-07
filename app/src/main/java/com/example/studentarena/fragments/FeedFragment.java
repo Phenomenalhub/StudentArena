@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.example.studentarena.EndlessRecyclerViewScrollListener;
 import com.example.studentarena.LoginActivity;
 import com.example.studentarena.Post;
 import com.example.studentarena.R;
@@ -33,6 +34,7 @@ import java.util.List;
 
 public class FeedFragment extends Fragment {
     private static final String TAG = "Feed Fragment";
+    public EndlessRecyclerViewScrollListener scrollListener;
     private SwipeRefreshLayout swipeContainer;
     RecyclerView rvPosts;
     protected PostsAdapter adapter;
@@ -66,17 +68,14 @@ public class FeedFragment extends Fragment {
         // initialize the array that will hold posts and create a PostsAdapter
         StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         rvPosts.setLayoutManager(gridLayoutManager);
-        allPosts = new ArrayList<>();
-        adapter = new PostsAdapter(getContext(), allPosts);
-        // set the adapter on the recycler view
-        rvPosts.setAdapter(adapter);
-        queryPosts();
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
         // Setup refresh listener which triggers new data loading
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                queryPosts();
+                allPosts.clear();
+                queryPosts(0);
+                adapter.notifyDataSetChanged();
             }
         });
         // Configure the refreshing colors
@@ -84,14 +83,25 @@ public class FeedFragment extends Fragment {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
+        allPosts = new ArrayList<>();
+        adapter = new PostsAdapter(getContext(), allPosts);
+        // set the adapter on the recycler view
+        rvPosts.setAdapter(adapter);
+        scrollListener = new EndlessRecyclerViewScrollListener(gridLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                queryPosts(totalItemsCount);
+            }
+        };
+        rvPosts.addOnScrollListener(scrollListener);
+        queryPosts(0);
     }
-
-    private void queryPosts() {
-        allPosts.clear();
+    private void queryPosts(int skip) {
         // specify what type of data we want to query - Post.class
         ParseQuery.getQuery(Post.class)
                 .include(Post.KEY_USER)
-                .setLimit(20).whereEqualTo("user", ParseUser.getCurrentUser())
+                .setLimit(20)
+                .setSkip(skip)
                 .addDescendingOrder("createdAt")
                 .findInBackground(new FindCallback<Post>() {
             @Override

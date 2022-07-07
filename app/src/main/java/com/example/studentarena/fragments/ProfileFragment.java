@@ -13,8 +13,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
+import com.example.studentarena.EndlessRecyclerViewScrollListener;
 import com.example.studentarena.LoginActivity;
 import com.example.studentarena.Post;
 import com.example.studentarena.R;
@@ -46,6 +47,7 @@ import java.util.List;
 public class ProfileFragment extends Fragment {
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE1 = 42;
     private static final String TAG = "ProfileFragment";
+    public EndlessRecyclerViewScrollListener scrollListener;
     private SwipeRefreshLayout swipeContainer;
     private ImageView ivProfileImage;
     private TextView tvUsername;
@@ -96,19 +98,16 @@ public class ProfileFragment extends Fragment {
         };
 
         rvPosts =view.findViewById(R.id.rvPosts);
-        allPosts = new ArrayList<>();
-        adapter = new PostsAdapter(getContext(), allPosts);
-        // set the adapter on the recycler view
-        rvPosts.setAdapter(adapter);
-        rvPosts.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        queryPosts();
-
+        StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        rvPosts.setLayoutManager(gridLayoutManager);
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
         // Setup refresh listener which triggers new data loading
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                queryPosts();
+                allPosts.clear();
+                queryPosts(0);
+                adapter.notifyDataSetChanged();
             }
         });
         // Configure the refreshing colors
@@ -116,6 +115,18 @@ public class ProfileFragment extends Fragment {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
+        allPosts = new ArrayList<>();
+        adapter = new PostsAdapter(getContext(), allPosts);
+        // set the adapter on the recycler view
+        rvPosts.setAdapter(adapter);
+        scrollListener = new EndlessRecyclerViewScrollListener(gridLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                queryPosts(totalItemsCount);
+            }
+        };
+        rvPosts.addOnScrollListener(scrollListener);
+        queryPosts(0);
     }
 
     private void launchCamera() {
@@ -158,12 +169,12 @@ public class ProfileFragment extends Fragment {
         // Return the file target for the photo based on filename
         return new File(mediaStorageDir.getPath() + File.separator + filename);
     }
-
-    private void queryPosts() {
-        allPosts.clear();
+    private void queryPosts(int skip) {
         ParseQuery.getQuery(Post.class)
                 .include(Post.KEY_USER)
-                .setLimit(20).whereEqualTo("user", ParseUser.getCurrentUser())
+                .setLimit(20)
+                .setSkip(skip)
+                .whereEqualTo("user", ParseUser.getCurrentUser())
                 .addDescendingOrder("createdAt")
                 .findInBackground(new FindCallback<Post>() {
             @Override
