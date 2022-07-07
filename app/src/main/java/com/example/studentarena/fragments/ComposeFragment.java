@@ -12,6 +12,7 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,12 +23,22 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.studentarena.Post;
 import com.example.studentarena.R;
 import com.example.studentarena.User;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -49,6 +60,10 @@ public class ComposeFragment extends Fragment {
     private Button btnSubmit;
     private File photoFile;
     public String photoFileName = "profilephoto.jpg";
+    //private String coordinate;
+    private Float latitude;
+    private Float longitude;
+
 
     public ComposeFragment() {
     }
@@ -95,6 +110,30 @@ public class ComposeFragment extends Fragment {
         });
     }
 
+    private void convertAddressToCordinates(String addressURL){
+        String url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + addressURL.replace(' ', '+') + "&key=AIzaSyAQT2qoV0i1ChpSlJqjbtBb4x6I-XfRDb8";
+        RequestQueue queue = Volley.newRequestQueue(getActivity());
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                JsonObject jsonObject = new JsonParser().parse(response).getAsJsonObject();
+                JsonArray results = jsonObject.getAsJsonArray("results");
+                JsonElement narrow = results.get(0);
+                JsonObject geometry = ((JsonObject) narrow).getAsJsonObject("geometry");
+                JsonObject location = geometry.getAsJsonObject("location");
+                //coordinate = location.getAsJsonPrimitive("lat").getAsDouble()+ "," +location.getAsJsonPrimitive("lng").getAsDouble();
+                latitude = location.getAsJsonPrimitive("lat").getAsFloat();
+                longitude = location.getAsJsonPrimitive("lng").getAsFloat();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i(TAG, "https error");
+            }
+        });
+        queue.add(stringRequest);
+    }
+
     private void savePost() {
         Post post = new Post();
         post.setDescription(etDescription.getText().toString());
@@ -102,6 +141,26 @@ public class ComposeFragment extends Fragment {
         post.setPrice(etPrice.getText().toString());
         post.setTitle(etTitle.getText().toString());
         post.setImage(new ParseFile(photoFile));
+        String address = etAddress.getText().toString()+","+ etCity.getText().toString()+","+ etState.getText().toString()+","+ etZipcode.getText().toString();
+        post.setAddress(address);
+        convertAddressToCordinates(address);
+        Handler h = new Handler();
+        h.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // TODO: save coordinates, remember to split by ","
+                //Log.i(TAG, coordinate);
+                Log.i(TAG, longitude.toString());
+                Log.i(TAG, latitude.toString());
+                post.setLocation(new ParseGeoPoint(latitude, longitude));
+                post.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+
+                    }
+                });
+            }
+        }, 3000);
         post.setUser((User)ParseUser.getCurrentUser());
         post.saveInBackground(new SaveCallback() {
             @Override

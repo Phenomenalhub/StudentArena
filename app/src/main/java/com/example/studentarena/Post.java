@@ -2,6 +2,7 @@ package com.example.studentarena;
 
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
@@ -17,6 +18,8 @@ public class Post extends ParseObject {
     public static final String KEY_PRICE = "price";
     public static final String KEY_IMAGE = "image";
     public static final String KEY_USER = "user";
+    public static final String KEY_ADDRESS = "address";
+    public static final String KEY_LOCATION = "location";
 
     public void setDescription(String description){
         put(KEY_DESCRIPTION, description);
@@ -48,5 +51,9 @@ public class Post extends ParseObject {
     public String getTitle() {
         return getString(KEY_TITLE);
     }
+    public String getAddress(){return getString(KEY_ADDRESS);}
+    public void setAddress(String address){put(KEY_ADDRESS, address);}
+    public ParseGeoPoint getLocation(){return getParseGeoPoint(KEY_LOCATION);}
+    public void setLocation(ParseGeoPoint parseGeoPoint){put(KEY_LOCATION, parseGeoPoint);}
 }
 
