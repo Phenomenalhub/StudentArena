@@ -74,8 +74,8 @@ public class FeedFragment extends Fragment {
             @Override
             public void onRefresh() {
                 allPosts.clear();
-                adapter.notifyDataSetChanged();
                 queryPosts(0);
+                adapter.notifyDataSetChanged();
             }
         });
         // Configure the refreshing colors
