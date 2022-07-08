@@ -128,7 +128,7 @@ public class ComposeFragment extends Fragment {
     }
 
     private void convertAddressToCoordinates(String addressURL, Post post){
-        String url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + addressURL.replace(' ', '+') + "&key=AIzaSyAQT2qoV0i1ChpSlJqjbtBb4x6I-XfRDb8";
+        String url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + addressURL.replace(' ', '+') + "&key="+getString(R.string.key);
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
