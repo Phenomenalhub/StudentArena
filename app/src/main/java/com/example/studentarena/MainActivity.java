@@ -30,36 +30,41 @@ import com.parse.ParseGeoPoint;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private ParseGeoPoint userLocationGeoPoint;
+    private final FeedFragment fragmentHome = new FeedFragment(MainActivity.this);
+    private final ComposeFragment fragmentCompose = new ComposeFragment(MainActivity.this);
+    private final MessageFragment fragmentMessage = new MessageFragment();
+    private final ProfileFragment fragmentProfile = new ProfileFragment(MainActivity.this);
+    public BottomNavigationView bottomNavigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment fragmentToShow = null;
+                Fragment fragmentToShow;
                 switch (item.getItemId()) {
                     case R.id.action_home:
-                        fragmentToShow = new FeedFragment();
+                        fragmentToShow = fragmentHome;
                         break;
                     case R.id.action_compose:
-                        fragmentToShow = new ComposeFragment();
+                        fragmentToShow = fragmentCompose;
                         break;
                     case R.id.action_message:
-                        fragmentToShow = new MessageFragment();
+                        fragmentToShow = fragmentMessage;
                         break;
                     case R.id.action_profile:
-                        fragmentToShow = new ProfileFragment();
+                        fragmentToShow = fragmentProfile;
                         break;
-                    default: break;
+                    default: fragmentToShow = fragmentHome;
                 }
-                if (fragmentToShow != null) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.flContainer, fragmentToShow).commit();
-                }
                 return true;
             }
         });
+        setUserLocation();
         bottomNavigationView.setSelectedItemId(R.id.action_home);
     }
     private void setUserLocation() {
@@ -80,8 +85,12 @@ public class MainActivity extends AppCompatActivity {
                 Double userLatitude = location.getLatitude();
                 userLocationGeoPoint = new ParseGeoPoint(userLatitude, userLongitude);
                 Log.i(TAG, "User's location is " + userLocationGeoPoint);
-                //exploreFragment.notifyAdapter();
+                fragmentHome.notifyAdapter();
             }
         });
+    }
+
+    public ParseGeoPoint getUserLocation() {
+        return userLocationGeoPoint;
     }
 }

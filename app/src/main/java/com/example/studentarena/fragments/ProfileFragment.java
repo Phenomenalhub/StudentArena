@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -21,7 +20,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +27,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
 import com.example.studentarena.LoginActivity;
+import com.example.studentarena.MainActivity;
 import com.example.studentarena.Post;
 import com.example.studentarena.R;
 import com.example.studentarena.User;
@@ -56,9 +55,11 @@ public class ProfileFragment extends Fragment {
     protected PostsAdapter adapter;
     protected List<Post> allPosts;
     private static final String KEY_PROFILE_IMAGE = "profile_image";
+    private MainActivity activity;
 
-    public ProfileFragment() {
+    public ProfileFragment(MainActivity mainActivity) {
         // Required empty public constructor
+        activity = mainActivity;
     }
 
     @Override
@@ -97,7 +98,7 @@ public class ProfileFragment extends Fragment {
 
         rvPosts =view.findViewById(R.id.rvPosts);
         allPosts = new ArrayList<>();
-        adapter = new PostsAdapter(getContext(), allPosts);
+        adapter = new PostsAdapter(getContext(), allPosts, activity);
         // set the adapter on the recycler view
         rvPosts.setAdapter(adapter);
         rvPosts.setLayoutManager(new GridLayoutManager(getContext(), 2));

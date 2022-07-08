@@ -12,7 +12,6 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import android.os.Environment;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +28,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.studentarena.MainActivity;
 import com.example.studentarena.Post;
 import com.example.studentarena.R;
 import com.example.studentarena.User;
@@ -60,13 +60,30 @@ public class ComposeFragment extends Fragment {
     private Button btnSubmit;
     private File photoFile;
     public String photoFileName = "profilephoto.jpg";
-    //private String coordinate;
     private Float latitude;
     private Float longitude;
+    MainActivity activity;
+    boolean posted = false;
 
-
-    public ComposeFragment() {
+    public ComposeFragment(MainActivity mainActivity) {
+        activity = mainActivity;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(posted){
+        etTitle.setText("");
+        etDescription.setText("");
+        etAddress.setText("");
+        etCity.setText("");
+        etContactinfo.setText("");
+        etPrice.setText("");
+        etState.setText("");
+        etZipcode.setText("");
+        ivPostImage.setImageResource(0);}
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -124,11 +141,11 @@ public class ComposeFragment extends Fragment {
                 //coordinate = location.getAsJsonPrimitive("lat").getAsDouble()+ "," +location.getAsJsonPrimitive("lng").getAsDouble();
                 latitude = location.getAsJsonPrimitive("lat").getAsFloat();
                 longitude = location.getAsJsonPrimitive("lng").getAsFloat();
-                post.setLocation(new ParseGeoPoint(latitude, longitude));
+                ParseGeoPoint test = new ParseGeoPoint(latitude, longitude);
+                post.setLocation(test);
                 post.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
-
                     }
                 });
             }
@@ -151,23 +168,6 @@ public class ComposeFragment extends Fragment {
         String address = etAddress.getText().toString()+","+ etCity.getText().toString()+","+ etState.getText().toString()+","+ etZipcode.getText().toString();
         post.setAddress(address);
         convertAddressToCoordinates(address, post);
-//        Handler h = new Handler();
-//        h.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                // TODO: save coordinates, remember to split by ","
-//                //Log.i(TAG, coordinate);
-//                Log.i(TAG, longitude.toString());
-//                Log.i(TAG, latitude.toString());
-//                post.setLocation(new ParseGeoPoint(latitude, longitude));
-////                post.saveInBackground(new SaveCallback() {
-////                    @Override
-////                    public void done(ParseException e) {
-////
-////                    }
-////                });
-//            }
-//        }, 3000);
         post.setUser((User)ParseUser.getCurrentUser());
         post.saveInBackground(new SaveCallback() {
             @Override
@@ -177,13 +177,15 @@ public class ComposeFragment extends Fragment {
                     Toast.makeText(getContext(), "Error while saving!", Toast.LENGTH_SHORT).show();
                 } else {
                     Log.i(TAG, "Post save was successful!!");
-                    getActivity().getSupportFragmentManager()
+                    posted = true;
+                    activity.getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.flContainer, new FeedFragment())
+                            .replace(R.id.flContainer, new FeedFragment(activity))
                             .commit();
                 }
             }
         });
+        activity.bottomNavigationView.setSelectedItemId(R.id.action_home);
     }
 
     private void launchCamera() {
