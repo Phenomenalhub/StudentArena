@@ -26,6 +26,7 @@ import com.example.studentarena.Post;
 import com.example.studentarena.R;
 import com.example.studentarena.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.textfield.TextInputLayout;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
@@ -36,14 +37,14 @@ import java.io.File;
 public class ComposeFragment extends Fragment {
     public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE =  200;
     private static final String TAG = "ComposeFragment";
-    private EditText etDescription;
-    private EditText etContactinfo;
-    private EditText etPrice;
-    private EditText etAddress;
-    private EditText etCity;
-    private EditText etState;
-    private EditText etZipcode;
-    private EditText etTitle;
+    private TextInputLayout etDescription;
+    private TextInputLayout etContactinfo;
+    private TextInputLayout etPrice;
+    private TextInputLayout etAddress;
+    private TextInputLayout etCity;
+    private TextInputLayout etState;
+    private TextInputLayout etZipcode;
+    private TextInputLayout etTitle;
     private Button btnCaptureImage;
     private ImageView ivPostImage;
     private Button btnSubmit;
@@ -60,14 +61,14 @@ public class ComposeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        etTitle = view.findViewById(R.id.etTitle);
-        etDescription = view.findViewById(R.id.etDescription);
-        etContactinfo = view.findViewById(R.id.etContactinfo);
-        etAddress = view.findViewById(R.id.etAddress);
-        etCity = view.findViewById(R.id.etCity);
-        etState = view.findViewById(R.id.etState);
-        etZipcode = view.findViewById(R.id.etZipcode);
-        etPrice = view.findViewById(R.id.etPrice);
+        etTitle = (TextInputLayout) view.findViewById(R.id.etTitle);
+        etDescription = (TextInputLayout) view.findViewById(R.id.etDescription);
+        etContactinfo = (TextInputLayout) view.findViewById(R.id.etContactinfo);
+        etAddress = (TextInputLayout) view.findViewById(R.id.etAddress);
+        etCity = (TextInputLayout) view.findViewById(R.id.etCity);
+        etState = (TextInputLayout) view.findViewById(R.id.etState);
+        etZipcode = (TextInputLayout) view.findViewById(R.id.etZipcode);
+        etPrice = (TextInputLayout) view.findViewById(R.id.etPrice);
         btnCaptureImage = view.findViewById(R.id.btnCaptureImage);
         ivPostImage = view.findViewById(R.id.ivPostImage);
         btnSubmit = view.findViewById(R.id.btnSubmit);
@@ -81,7 +82,7 @@ public class ComposeFragment extends Fragment {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (etDescription.getText().toString().isEmpty()){
+                if (etDescription.getEditText().toString().isEmpty()){
                     Toast.makeText(getContext(),"Description cannot be empty", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -97,10 +98,10 @@ public class ComposeFragment extends Fragment {
 
     private void savePost() {
         Post post = new Post();
-        post.setDescription(etDescription.getText().toString());
-        post.setContact(etContactinfo.getText().toString());
-        post.setPrice(etPrice.getText().toString());
-        post.setTitle(etTitle.getText().toString());
+        post.setDescription(etDescription.getEditText().getText().toString());
+        post.setContact(etContactinfo.getEditText().getText().toString());
+        post.setPrice(etPrice.getEditText().getText().toString());
+        post.setTitle(etTitle.getEditText().getText().toString());
         post.setImage(new ParseFile(photoFile));
         post.setUser((User)ParseUser.getCurrentUser());
         post.saveInBackground(new SaveCallback() {

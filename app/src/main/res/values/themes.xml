@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.StudentArena" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimary">#8C9DDF</item>
         <item name="colorPrimaryVariant">#8C9DDF</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
