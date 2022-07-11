@@ -7,8 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -18,26 +20,27 @@ import com.example.studentarena.R;
 import com.parse.ParseFile;
 
 import org.parceler.Parcels;
+
 import java.util.List;
 
-public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
+public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHolder>{
     private Context context;
     private List<Post> posts;
 
     @NonNull
     @Override
-    public PostsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_post, parent, false);
+    public ProfileAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.item_profile, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PostsAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ProfileAdapter.ViewHolder holder, int position) {
         Post post = posts.get(position);
         holder.bind(post);
-
     }
-    public PostsAdapter(Context context, List<Post> posts) {
+
+    public ProfileAdapter(Context context, List<Post> posts) {
         this.context = context;
         this.posts = posts;
     }
@@ -50,18 +53,18 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView ivImage;
         private TextView tvPrice;
-        private TextView tvTitle;
-
+        private TextView tvDetail;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivImage = itemView.findViewById(R.id.ivImage);
-            tvPrice = itemView.findViewById(R.id.tvPrice);
-            tvTitle = itemView.findViewById(R.id.tvTitle);
+            //tvPrice = itemView.findViewById(R.id.tvPrice);
+            tvDetail = itemView.findViewById(R.id.tvTitle);
         }
+
         public void bind(Post post) {
             // Bind the post data to the view elements
-            tvTitle.setText(post.getTitle());
-            tvPrice.setText("$" + post.getPrice());
+            tvDetail.setText("$" + post.getPrice()+ " •  " + post.getTitle());
+            //tvPrice.setText("$" + post.getPrice());
             ParseFile image = post.getImage();
             if (image != null) {
                 ivImage.setVisibility(View.VISIBLE);

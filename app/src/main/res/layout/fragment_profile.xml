@@ -119,7 +119,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tvPost">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvPosts"
+            android:id="@+id/rvProfile"
             android:layout_width="413dp"
             android:layout_height="428dp"
             android:layout_centerInParent="true" />
