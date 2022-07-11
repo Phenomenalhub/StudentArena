@@ -16,6 +16,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.studentarena.DetailActivity;
 import com.example.studentarena.Post;
+import com.example.studentarena.ProfileDetailsActivity;
 import com.example.studentarena.R;
 import com.parse.ParseFile;
 
@@ -52,19 +53,16 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
 
     class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView ivImage;
-        private TextView tvPrice;
         private TextView tvDetail;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivImage = itemView.findViewById(R.id.ivImage);
-            //tvPrice = itemView.findViewById(R.id.tvPrice);
             tvDetail = itemView.findViewById(R.id.tvTitle);
         }
 
         public void bind(Post post) {
             // Bind the post data to the view elements
             tvDetail.setText("$" + post.getPrice()+ " •  " + post.getTitle());
-            //tvPrice.setText("$" + post.getPrice());
             ParseFile image = post.getImage();
             if (image != null) {
                 ivImage.setVisibility(View.VISIBLE);
@@ -75,7 +73,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
             ivImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(context, DetailActivity.class);
+                    Intent i = new Intent(context, ProfileDetailsActivity.class);
 
                     i.putExtra("Posts", Parcels.wrap(post));
                     context.startActivity(i);

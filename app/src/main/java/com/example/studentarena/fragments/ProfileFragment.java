@@ -100,8 +100,6 @@ public class ProfileFragment extends Fragment {
 
         rvProfile =view.findViewById(R.id.rvProfile);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        //StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        //rvPosts.setLayoutManager(gridLayoutManager);
         rvProfile.setLayoutManager(linearLayoutManager);
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
         // Setup refresh listener which triggers new data loading
