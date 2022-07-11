@@ -122,6 +122,7 @@ public class ComposeFragment extends Fragment {
 
     private void launchCamera() {
         Intent intent = new Intent( MediaStore.ACTION_IMAGE_CAPTURE);
+        //Intent intent = new Intent( MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA);
         // Create a File reference for future access
         photoFile = getPhotoFileUri(photoFileName);
         Uri fileProvider = FileProvider.getUriForFile(getContext(), "com.codepath.fileprovider", photoFile);
