@@ -74,7 +74,6 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(context, ProfileDetailsActivity.class);
-
                     i.putExtra("Posts", Parcels.wrap(post));
                     context.startActivity(i);
                 }
