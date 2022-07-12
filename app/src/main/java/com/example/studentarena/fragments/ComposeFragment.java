@@ -12,6 +12,7 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import android.os.Environment;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,9 +47,13 @@ public class ComposeFragment extends Fragment {
     private EditText etTitle;
     private Button btnCaptureImage;
     private ImageView ivPostImage;
+    private ImageView ivPostImage2;
     private Button btnSubmit;
     private File photoFile;
-    public String photoFileName = "profilephoto.jpg";
+    public String photoFileName = "photo1.jpg";
+    public String photoFileName2 = "photo2.jpg";
+    public String whichImageView = "";
+    Post post = new Post();
 
     public ComposeFragment() {
     }
@@ -69,12 +74,21 @@ public class ComposeFragment extends Fragment {
         etZipcode = view.findViewById(R.id.etZipcode);
         etPrice = view.findViewById(R.id.etPrice);
         btnCaptureImage = view.findViewById(R.id.btnCaptureImage);
+        ivPostImage2 = view.findViewById(R.id.ivPostImage2);
         ivPostImage = view.findViewById(R.id.ivPostImage);
         btnSubmit = view.findViewById(R.id.btnSubmit);
+        ivPostImage2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                whichImageView = "ImageView2";
+                launchCamera("ImageView2");
+            }
+        });
         btnCaptureImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchCamera();
+                whichImageView = "ImageView1";
+                launchCamera("ImageView1");
             }
         });
 
@@ -96,12 +110,11 @@ public class ComposeFragment extends Fragment {
     }
 
     private void savePost() {
-        Post post = new Post();
+
         post.setDescription(etDescription.getText().toString());
         post.setContact(etContactinfo.getText().toString());
         post.setPrice(etPrice.getText().toString());
         post.setTitle(etTitle.getText().toString());
-        post.setImage(new ParseFile(photoFile));
         post.setUser((User)ParseUser.getCurrentUser());
         post.saveInBackground(new SaveCallback() {
             @Override
@@ -120,13 +133,18 @@ public class ComposeFragment extends Fragment {
         });
     }
 
-    private void launchCamera() {
+    private void launchCamera(String postImageViewString) {
         Intent intent = new Intent( MediaStore.ACTION_IMAGE_CAPTURE);
         //Intent intent = new Intent( MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA);
         // Create a File reference for future access
-        photoFile = getPhotoFileUri(photoFileName);
+        if (whichImageView.equals("ImageView2")) {
+            photoFile = getPhotoFileUri(photoFileName2);
+        } else {
+            photoFile = getPhotoFileUri(photoFileName);
+        }
         Uri fileProvider = FileProvider.getUriForFile(getContext(), "com.codepath.fileprovider", photoFile);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
+        intent.putExtra("PostImageView", postImageViewString);
         // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
         // So as long as the result is not null, it's safe to use the intent.
         if (intent.resolveActivity(getContext().getPackageManager()) != null) {
@@ -142,8 +160,14 @@ public class ComposeFragment extends Fragment {
             if (resultCode == getActivity().RESULT_OK) {
                 // by this point we have the camera photo on disk
                 Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-                // RESIZE BITMAP, Load the taken image into a preview
-                ivPostImage.setImageBitmap(takenImage);
+                if(whichImageView.equals("ImageView1")){
+                    ivPostImage.setImageBitmap(takenImage);
+                    post.setImage(new ParseFile(photoFile));
+                }
+                else if(whichImageView.equals("ImageView2")){
+                    ivPostImage2.setImageBitmap(takenImage);
+                    post.setImage2(new ParseFile(photoFile));
+                }
             } else { // Result was a failure
                 Toast.makeText(getContext(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }
