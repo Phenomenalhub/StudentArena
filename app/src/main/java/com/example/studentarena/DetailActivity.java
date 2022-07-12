@@ -46,7 +46,6 @@ public class DetailActivity extends AppCompatActivity {
         ParseFile image = post.getImage();
         ParseFile userImage = post.getUser().getProfileImage();
         Glide.with(this).load(image.getUrl()).transform(new CenterCrop(),new RoundedCorners(50)).into(ivImage);
-        //Glide.with(this).load(image.getUrl()).into(ivImage);
         if (userImage != null) {
             Glide.with(this).load(userImage.getUrl()).centerCrop().circleCrop().into(ivProfileImage);
         }else{
