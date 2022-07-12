@@ -8,8 +8,6 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.SearchView;
-
-import com.example.studentarena.adapter.PostsAdapter;
 import com.example.studentarena.adapter.SearchAdapter;
 import com.parse.FindCallback;
 import com.parse.ParseException;
