@@ -31,20 +31,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="160dp"
                 android:layout_marginTop="8dp"
-                android:text="You"
+                android:text="@string/You"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textSize="25sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-
                 android:id="@+id/tvLogout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:text="Log out"
+                android:text="@string/Log_out"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -83,7 +82,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Full name"
+        android:text="@string/Full_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivProfileImage" />
@@ -93,7 +92,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Username"
+        android:text="@string/Username"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvFullName" />
@@ -104,7 +103,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Post"
+        android:text="@string/Post"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvUsername" />
 
@@ -119,7 +118,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tvPost">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvPosts"
+            android:id="@+id/rvProfile"
             android:layout_width="413dp"
             android:layout_height="428dp"
             android:layout_centerInParent="true" />
