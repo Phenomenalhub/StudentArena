@@ -71,7 +71,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             // Bind the post data to the view elements
             tvTitle.setText(post.getTitle());
             tvPrice.setText("$" + post.getPrice());
-//            tvMiles.setText(String.format(String.valueOf(setDistanceFromUser(post.getParseGeoPoint("location")))));
             ParseFile image = post.getImage();
             if (image != null) {
                 ivImage.setVisibility(View.VISIBLE);
@@ -94,8 +93,9 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         }
 
         private void setDistanceFromUser(ParseGeoPoint postLocation) {
-            if (activity.getUserLocation() != null ) {
-                distanceToUser = (int) postLocation.distanceInMilesTo(activity.getUserLocation());
+            ParseGeoPoint userLocation = activity.getUserLocation();
+            if (userLocation != null) {
+                distanceToUser = (int) postLocation.distanceInMilesTo(userLocation);
                 tvMiles.setText(distanceToUser + " mi.");
             }
         }

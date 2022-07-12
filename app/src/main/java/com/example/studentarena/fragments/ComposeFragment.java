@@ -72,16 +72,17 @@ public class ComposeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(posted){
-        etTitle.setText("");
-        etDescription.setText("");
-        etAddress.setText("");
-        etCity.setText("");
-        etContactinfo.setText("");
-        etPrice.setText("");
-        etState.setText("");
-        etZipcode.setText("");
-        ivPostImage.setImageResource(0);}
+        if (posted) {
+            etTitle.setText("");
+            etDescription.setText("");
+            etAddress.setText("");
+            etCity.setText("");
+            etContactinfo.setText("");
+            etPrice.setText("");
+            etState.setText("");
+            etZipcode.setText("");
+            ivPostImage.setImageResource(0);
+        }
     }
 
     @Override
@@ -138,16 +139,16 @@ public class ComposeFragment extends Fragment {
                 JsonElement narrow = results.get(0);
                 JsonObject geometry = ((JsonObject) narrow).getAsJsonObject("geometry");
                 JsonObject location = geometry.getAsJsonObject("location");
-                //coordinate = location.getAsJsonPrimitive("lat").getAsDouble()+ "," +location.getAsJsonPrimitive("lng").getAsDouble();
                 latitude = location.getAsJsonPrimitive("lat").getAsFloat();
                 longitude = location.getAsJsonPrimitive("lng").getAsFloat();
-                ParseGeoPoint test = new ParseGeoPoint(latitude, longitude);
-                post.setLocation(test);
+                ParseGeoPoint coordinate = new ParseGeoPoint(latitude, longitude);
+                post.setLocation(coordinate);
                 post.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
                     }
                 });
+                activity.bottomNavigationView.setSelectedItemId(R.id.action_home);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -185,7 +186,6 @@ public class ComposeFragment extends Fragment {
                 }
             }
         });
-        activity.bottomNavigationView.setSelectedItemId(R.id.action_home);
     }
 
     private void launchCamera() {
