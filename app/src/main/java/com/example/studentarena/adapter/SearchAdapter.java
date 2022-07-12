@@ -22,24 +22,24 @@ import com.parse.ParseUser;
 import org.parceler.Parcels;
 import java.util.List;
 
-public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
+public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
     private Context context;
     private List<Post> posts;
 
     @NonNull
     @Override
-    public PostsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public SearchAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_post, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PostsAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull SearchAdapter.ViewHolder holder, int position) {
         Post post = posts.get(position);
         holder.bind(post);
 
     }
-    public PostsAdapter(Context context, List<Post> posts) {
+    public SearchAdapter(Context context, List<Post> posts) {
         this.context = context;
         this.posts = posts;
     }

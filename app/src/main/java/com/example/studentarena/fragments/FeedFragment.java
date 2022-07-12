@@ -23,6 +23,8 @@ import com.example.studentarena.EndlessRecyclerViewScrollListener;
 import com.example.studentarena.LoginActivity;
 import com.example.studentarena.Post;
 import com.example.studentarena.R;
+import com.example.studentarena.SearchActivity;
+import com.example.studentarena.SignUpActivity;
 import com.example.studentarena.adapter.PostsAdapter;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -53,6 +55,13 @@ public class FeedFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        view.findViewById(R.id.ibSearch).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getContext(), SearchActivity.class);
+                startActivity(i);
+            }
+        });
         view.findViewById(R.id.ibLogout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
