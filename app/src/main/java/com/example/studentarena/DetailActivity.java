@@ -8,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.parse.ParseFile;
 import org.parceler.Parcels;
 
@@ -43,7 +45,7 @@ public class DetailActivity extends AppCompatActivity {
         tvCreatedAt.setText(post.getCreatedAt().toString());
         ParseFile image = post.getImage();
         ParseFile userImage = post.getUser().getProfileImage();
-        Glide.with(this).load(image.getUrl()).into(ivImage);
+        Glide.with(this).load(image.getUrl()).transform(new CenterCrop(),new RoundedCorners(50)).into(ivImage);
         if (userImage != null) {
             Glide.with(this).load(userImage.getUrl()).centerCrop().circleCrop().into(ivProfileImage);
         }else{
