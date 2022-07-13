@@ -2,6 +2,8 @@ package com.example.studentarena;
 
 import android.app.Application;
 
+import com.example.studentarena.model.Post;
+import com.example.studentarena.model.User;
 import com.parse.Parse;
 import com.parse.ParseObject;
 

@@ -26,6 +26,9 @@
         android:theme="@style/Theme.StudentArena"
         tools:targetApi="31">
         <activity
+            android:name=".ChatActivity"
+            android:exported="false" />
+        <activity
             android:name=".ProfileDetailsActivity"
             android:exported="false" />
 

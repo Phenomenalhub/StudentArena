@@ -1,4 +1,4 @@
-package com.example.studentarena;
+package com.example.studentarena.model;
 
 import com.parse.ParseClassName;
 import com.parse.ParseFile;

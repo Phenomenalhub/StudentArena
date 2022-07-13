@@ -18,14 +18,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.studentarena.Post;
+import com.example.studentarena.model.Post;
 import com.example.studentarena.R;
-import com.example.studentarena.User;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.example.studentarena.model.User;
 import com.google.android.material.textfield.TextInputLayout;
 import com.parse.ParseException;
 import com.parse.ParseFile;
