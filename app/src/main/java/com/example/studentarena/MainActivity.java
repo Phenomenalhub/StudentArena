@@ -27,7 +27,7 @@ import com.example.studentarena.fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.ParseGeoPoint;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
     private static final String TAG = "MainActivity";
     private ParseGeoPoint userLocationGeoPoint;
     private final FeedFragment fragmentHome = new FeedFragment(MainActivity.this);
