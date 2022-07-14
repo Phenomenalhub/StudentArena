@@ -35,9 +35,9 @@ public class Post extends ParseObject {
     }
     public void setContact(String contact){put(KEY_CONTACT, contact);}
     public void setTitle(String title){put(KEY_TITLE, title);}
-    public void setPrice(String price){put(KEY_PRICE, price);}
-    public String getPrice() {
-        return getString(KEY_PRICE);
+    public void setPrice(Double price){put(KEY_PRICE, price);}
+    public Double getPrice() {
+        return getDouble(KEY_PRICE);
     }
     public String getDescription(){
         return getString(KEY_DESCRIPTION);

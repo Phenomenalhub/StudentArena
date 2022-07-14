@@ -23,16 +23,26 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="true">
 
-    <SearchView
-        android:id="@+id/searchView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/cardview_light_background"
-        android:iconifiedByDefault="false"
-        android:queryHint="Search here"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
+            <SearchView
+                android:id="@+id/searchView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/cardview_light_background"
+                android:iconifiedByDefault="false"
+                android:queryHint="Search here"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/ibFilter"
+                android:layout_width="70dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_baseline_filter_list_24" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
