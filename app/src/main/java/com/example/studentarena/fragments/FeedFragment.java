@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.studentarena.EndlessRecyclerViewScrollListener;
 import com.example.studentarena.LoginActivity;
 import com.example.studentarena.MainActivity;
 import com.example.studentarena.Post;
@@ -31,6 +32,7 @@ import java.util.List;
 
 public class FeedFragment extends Fragment {
     private static final String TAG = "Feed Fragment";
+    public EndlessRecyclerViewScrollListener scrollListener;
     private SwipeRefreshLayout swipeContainer;
     RecyclerView rvPosts;
     protected PostsAdapter adapter;
@@ -76,7 +78,9 @@ public class FeedFragment extends Fragment {
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                queryPosts();
+                allPosts.clear();
+                queryPosts(0);
+                adapter.notifyDataSetChanged();
             }
         });
         // Configure the refreshing colors
@@ -84,14 +88,21 @@ public class FeedFragment extends Fragment {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
+        scrollListener = new EndlessRecyclerViewScrollListener(gridLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                queryPosts(totalItemsCount);
+            }
+        };
+        rvPosts.addOnScrollListener(scrollListener);
+        queryPosts(0);
     }
-
-    private void queryPosts() {
-        allPosts.clear();
+    private void queryPosts(int skip) {
         // specify what type of data we want to query - Post.class
         ParseQuery.getQuery(Post.class)
                 .include(Post.KEY_USER)
-                .setLimit(20).whereEqualTo("user", ParseUser.getCurrentUser())
+                .setLimit(20)
+                .setSkip(skip)
                 .addDescendingOrder("createdAt")
                 .findInBackground(new FindCallback<Post>() {
             @Override

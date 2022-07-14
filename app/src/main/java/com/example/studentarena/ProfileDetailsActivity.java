@@ -13,7 +13,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.parse.ParseFile;
 import org.parceler.Parcels;
 
-public class DetailActivity extends AppCompatActivity {
+public class ProfileDetailsActivity extends AppCompatActivity {
 
     TextView tvTitle;
     TextView tvPrice;
@@ -27,7 +27,7 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
+        setContentView(R.layout.activity_profile_details);
         tvTitle = findViewById(R.id.tvTitle);
         tvPrice = findViewById(R.id.tvPrice);
         tvContactInfo = findViewById(R.id.tvContactInfo);
