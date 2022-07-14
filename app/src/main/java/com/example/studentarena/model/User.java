@@ -24,4 +24,7 @@ public class User extends ParseUser {
     {
         put(KEY_LAST_NAME,lastName);
     }
+    public String getKeyFirstName() {
+        return getString(KEY_FIRST_NAME);
+    }
 }

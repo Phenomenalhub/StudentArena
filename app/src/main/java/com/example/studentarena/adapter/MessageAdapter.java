@@ -1,4 +1,4 @@
 package com.example.studentarena.adapter;
 
-public class MessageAdapter {
+public class MessageAdapter  {
 }
