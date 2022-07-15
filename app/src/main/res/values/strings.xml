@@ -1,7 +1,12 @@
 <resources>
     <string name="app_name">StudentArena</string>
-    <string name="Post_Item">Post Item</string>
-    <string name="Take_Picture">Take Picture</string>
+    <string name="post_Item">Post Item</string>
+    <string name="you">You</string>
+    <string name="log_out">Log out</string>
+    <string name="full_name">Full name</string>
+    <string name="username">Username</string>
+    <string name="post">Post</string>
+    <string name="take_Picture">Take Picture</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_posts">Posts</string>
     <!-- Strings used for fragments for navigation -->
