@@ -134,7 +134,6 @@ public class ComposeFragment extends Fragment {
         String newAddressURL = addressURL.replace(' ', '+');
         String url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + newAddressURL + "&key="+getString(R.string.key);
         Log.i("String URL", newAddressURL);
-        //String url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&key="+getString(R.string.key);
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
