@@ -98,7 +98,7 @@ public class ComposeFragment extends Fragment {
         Post post = new Post();
         post.setDescription(etDescription.getEditText().getText().toString());
         post.setContact(etContactinfo.getEditText().getText().toString());
-        post.setPrice(etPrice.getEditText().getText().toString());
+        //post.setPrice(etPrice.getEditText().getText().toString());
         post.setTitle(etTitle.getEditText().getText().toString());
         post.setImage(new ParseFile(photoFile));
         post.setUser((User)ParseUser.getCurrentUser());

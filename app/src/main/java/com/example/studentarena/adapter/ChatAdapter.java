@@ -13,6 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.studentarena.R;
 import com.example.studentarena.model.Message;
+import com.example.studentarena.model.User;
+import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseUser;
 
 import java.math.BigInteger;
@@ -44,12 +47,14 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
-
+        Message message = chats.get(position);
+        holder.bindMessage(message);
     }
 
-    public ChatAdapter(Context context, List<Message> messages) {
+    public ChatAdapter(Context context, String userId, List<Message> messages) {
         chats = messages;
         mContext = context;
+        this.mUserId = userId;
     }
 
     @Override
@@ -68,7 +73,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
 
     private boolean isMe(int position) {
         Message message = chats.get(position);
-        return message.getSender() != null && message.getSender().getObjectId().equals(mUserId);
+        return message.getSender() != null && message.getSender().getObjectId().equals(ParseUser.getCurrentUser().getObjectId());
     }
 
     public abstract class ChatViewHolder extends RecyclerView.ViewHolder {
@@ -94,32 +99,60 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
 
         @Override
         public void bindMessage(Message message) {
-            if (message.getSender().getProfileImage() != null) {
-                imageOther.setVisibility(View.VISIBLE);
-                Glide.with(mContext)
-                        .load(message.getSender().getProfileImage().getUrl())
-                        .circleCrop() // create an effect of a round profile picture
-                        .into(imageOther);
-            } else {
-                imageOther.setVisibility(View.GONE);
-                body.setText(message.getBody());
-                name.setText(message.getSender().getKeyFirstName());
+            User otherUser = (User) new User();
+            try{
+                otherUser = (User) message.getSender().fetchIfNeeded();
+            } catch (ParseException e){
+
             }
+//            ParseFile image = (ParseFile) otherUser.getProfileImage();
+//            if(image != null) {
+//                Glide.with(mContext).load(image.getUrl()).circleCrop().into(imageOther);
+//            }
+//            if (message.getSender().getProfileImage() != null) {
+//                imageOther.setVisibility(View.VISIBLE);
+//                Glide.with(mContext)
+//                        .load(message.getSender().getProfileImage().getUrl())
+//                        .circleCrop() // create an effect of a round profile picture
+//                        .into(imageOther);
+//            } else {
+//                imageOther.setVisibility(View.GONE);
+//                body.setText(message.getBody());
+//                name.setText(message.getSender().getKeyFirstName());
+//            }
+            body.setText(message.getBody());
+//            if (message.getSender().getProfileImage() != null) {
+//                imageOther.setVisibility(View.VISIBLE);
+//                Glide.with(mContext)
+//                        .load(message.getSender().getProfileImage().getUrl())
+//                        .circleCrop() // create an effect of a round profile picture
+//                        .into(imageOther);
+//            } else {
+//                imageOther.setVisibility(View.GONE);
+//                body.setText(message.getBody());
+//                name.setText(message.getSender().getKeyFirstName());
+//            }
         }
     }
 
-        public class OutgoingChatViewHolder extends ChatViewHolder {
-            TextView body;
+    public class OutgoingChatViewHolder extends ChatViewHolder {
+        TextView body;
 
-            public OutgoingChatViewHolder(View itemView) {
-                super(itemView);
-                body = (TextView) itemView.findViewById(R.id.tvMessage_me);
-            }
-
-            @Override
-            public void bindMessage(Message message) {
-                body.setText(message.getBody());
-            }
+        public OutgoingChatViewHolder(View itemView) {
+            super(itemView);
+            body = (TextView) itemView.findViewById(R.id.tvMessage_me);
         }
+
+        @Override
+        public void bindMessage(Message message) {
+            User otherMe = (User) new User();
+            try{
+                otherMe = (User) message.getSender().fetchIfNeeded();
+            } catch (ParseException e){
+
+            }
+            body.setText(message.getBody());
+        }
+    }
 
 }

@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="16dp"
-            android:layout_toStartOf="@+id/btnSend"
+            android:layout_toStartOf="@+id/ibSend"
             android:background="@android:color/transparent"
             android:hint="Enter Message"
             android:inputType="text"
@@ -72,13 +72,13 @@
             tools:ignore="Autofill" />
 
         <Button
-            android:id="@+id/btnSend"
+            android:id="@+id/ibSend"
             android:layout_width="95dp"
             android:layout_height="48dp"
             android:layout_alignParentEnd="true"
             android:text="Send"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </RelativeLayout>
 

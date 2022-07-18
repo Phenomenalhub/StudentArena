@@ -60,7 +60,7 @@ public class FeedFragment extends Fragment {
             }
         });
 
-        rvPosts = view.findViewById(R.id.rvPosts);
+        rvPosts = view.findViewById(R.id.rvMessages);
         // initialize the array that will hold posts and create a PostsAdapter
         StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         rvPosts.setLayoutManager(gridLayoutManager);
@@ -96,6 +96,7 @@ public class FeedFragment extends Fragment {
         // specify what type of data we want to query - Post.class
         ParseQuery.getQuery(Post.class)
                 .include(Post.KEY_USER)
+                //.whereNotEqualTo(Post.KEY_USER, ParseUser.getCurrentUser())
                 .setLimit(20)
                 .setSkip(skip)
                 .addDescendingOrder("createdAt")

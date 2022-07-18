@@ -72,7 +72,7 @@
         app:layout_constraintTop_toBottomOf="@+id/postToolbar">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvPosts"
+        android:id="@+id/rvMessages"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_centerInParent="true"
