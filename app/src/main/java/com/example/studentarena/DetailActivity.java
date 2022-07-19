@@ -18,6 +18,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.studentarena.model.Message;
 import com.example.studentarena.model.Post;
 import com.example.studentarena.model.User;
+import com.example.studentarena.utilities.GetRelativeTime;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
@@ -60,7 +61,7 @@ public class DetailActivity extends AppCompatActivity {
         tvContactInfo.setText(mPost.getContact());
         tvDescription.setText(mPost.getDescription());
         tvUsername.setText(mPost.getUser().getUsername());
-        tvCreatedAt.setText(mPost.getCreatedAt().toString());
+        tvCreatedAt.setText(GetRelativeTime.getSimpleTime(mPost.getCreatedAt()));
         ParseFile image = mPost.getImage();
         ParseFile userImage = mPost.getUser().getProfileImage();
         Glide.with(this).load(image.getUrl()).transform(new CenterCrop(),new RoundedCorners(50)).into(ivImage);

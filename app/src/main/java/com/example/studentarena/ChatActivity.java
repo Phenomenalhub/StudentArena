@@ -45,7 +45,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        otherUser = Parcels.unwrap(getIntent().getParcelableExtra("otherUser"));
+        otherUser = (User) Parcels.unwrap(getIntent().getParcelableExtra("otherUser"));
         targetPost = (getIntent().getParcelableExtra("targetPost"));
         if (otherUser != null) {
             setupMessagePosting(otherUser);
@@ -62,7 +62,7 @@ public class ChatActivity extends AppCompatActivity {
         final String userId = ParseUser.getCurrentUser().getObjectId();
         cAdapter = new ChatAdapter(ChatActivity.this, userId, chats);
         rvChat.setAdapter(cAdapter);
-        // associate the LayoutManager with the RecylerView
+        // associate the LayoutManager with the RecyclerView
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ChatActivity.this);
         linearLayoutManager.setReverseLayout(true);
         rvChat.setLayoutManager(linearLayoutManager);

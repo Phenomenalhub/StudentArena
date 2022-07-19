@@ -5,16 +5,22 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.studentarena.ChatActivity;
+import com.example.studentarena.R;
 import com.example.studentarena.databinding.ItemMessageBinding;
 import com.example.studentarena.model.Message;
+import com.example.studentarena.model.Post;
 import com.example.studentarena.model.User;
+import com.example.studentarena.utilities.GetRelativeTime;
 import com.parse.ParseUser;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -49,37 +55,35 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         ItemMessageBinding itemMessageBinding;
-//        GetRelativeTime getRelativeTime = new GetRelativeTime();
 
         public ViewHolder(ItemMessageBinding binding) {
             super(binding.getRoot());
             itemMessageBinding = binding;
             itemMessageBinding.getRoot().setOnClickListener(this);
+            binding.getRoot().setOnClickListener(this);
         }
 
         public void bind(Message message) {
-
+            Post post = message.getTargetPost();
             if (message.getSender().getObjectId().equals(ParseUser.getCurrentUser().getObjectId())) {
-                itemMessageBinding.tvMessageSenderName.setText(message.getReceiver().getUsername());
-                if (message.getReceiver().getProfileImage() != null) {
-                    Glide.with(context).load(message.getReceiver().getProfileImage().getUrl()).circleCrop().into(itemMessageBinding.ivMessageSender);
+                itemMessageBinding.tvMessageSenderName.setText(message.getSender().getUsername() +" • "+ post.getTitle()) ;
+                if (post.getImage() != null) {
+                    Glide.with(context).load(post.getImage().getUrl()).circleCrop().into(itemMessageBinding.ivMessageSender);
                 }
             } else {
                 itemMessageBinding.tvMessageSenderName.setText(message.getSender().getUsername());
                 if (message.getSender().getProfileImage() != null) {
-                    Glide.with(context).load(message.getSender().getProfileImage().getUrl()).circleCrop().into(itemMessageBinding.ivMessageSender);
+                    Glide.with(context).load(post.getImage().getUrl()).circleCrop().into(itemMessageBinding.ivMessageSender);
                 }
             }
-
-//            itemMessageBinding.tvMessageSent.setText((message.getMessage()));
-//            String dateSent = getRelativeTime.getRelativeTimeAgo(message.getCreatedAt().toString());
-//            itemMessageBinding.tvMessageDateSent.setText(dateSent);
-
+            TextView tvMessageDateSent = (TextView) itemView.findViewById(R.id.tvMessageDateSent);
+            tvMessageDateSent.setText(GetRelativeTime.getSimpleTime(message.getCreatedAt()));
+            TextView tvMessageSent = (TextView) itemView.findViewById(R.id.tvMessageSent);
+            tvMessageSent.setText(message.getBody());
         }
 
         @Override
         public void onClick(View v) {
-
             Intent i = new Intent(context, ChatActivity.class);
             User otherUser;
             String userId = ParseUser.getCurrentUser().getObjectId().toString();
@@ -90,7 +94,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             } else {
                 otherUser = messages.get(getAdapterPosition()).getSender();
             }
-            i.putExtra("otherUser", otherUser);
+            i.putExtra("otherUser", Parcels.wrap(otherUser));
+            i.putExtra("targetPost", messages.get(getAdapterPosition()).getTargetPost());
             context.startActivity(i);
         }
     }

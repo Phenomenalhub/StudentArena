@@ -4,18 +4,24 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.10326086956521739" />
+        <entry key="app/src/main/res/drawable/ic_baseline_filter_list_24.xml" value="0.2045" />
+        <entry key="app/src/main/res/drawable/ic_filter_background.xml" value="0.2045" />
+        <entry key="app/src/main/res/drawable/ic_filter_foreground.xml" value="0.2045" />
         <entry key="app/src/main/res/drawable/round.xml" value="0.1345" />
         <entry key="app/src/main/res/layout/activity_chat.xml" value="0.30364583333333334" />
         <entry key="app/src/main/res/layout/activity_detail.xml" value="0.3699731903485255" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.32864583333333336" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.390625" />
+        <entry key="app/src/main/res/layout/activity_profile_details.xml" value="0.3731481481481482" />
         <entry key="app/src/main/res/layout/activity_search.xml" value="0.32916666666666666" />
+        <entry key="app/src/main/res/layout/activity_search_filter.xml" value="0.2994791666666667" />
         <entry key="app/src/main/res/layout/activity_signup.xml" value="0.3145833333333333" />
-        <entry key="app/src/main/res/layout/fragment_compose.xml" value="0.475" />
-        <entry key="app/src/main/res/layout/fragment_feed.xml" value="0.2361111111111111" />
+        <entry key="app/src/main/res/layout/fragment_compose.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_feed.xml" value="0.1843137254901961" />
         <entry key="app/src/main/res/layout/fragment_message.xml" value="0.2361111111111111" />
         <entry key="app/src/main/res/layout/fragment_post.xml" value="0.5270833333333333" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.2361111111111111" />
+        <entry key="app/src/main/res/layout/fragment_search_filter.xml" value="0.45" />
         <entry key="app/src/main/res/layout/item_message.xml" value="0.2851851851851852" />
         <entry key="app/src/main/res/layout/item_post.xml" value="0.27194860813704497" />
         <entry key="app/src/main/res/layout/item_profile.xml" value="0.20677083333333332" />

@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.example.studentarena.EndlessRecyclerViewScrollListener;
 import com.example.studentarena.LoginActivity;
@@ -35,6 +36,7 @@ public class FeedFragment extends Fragment {
     RecyclerView rvPosts;
     protected PostsAdapter adapter;
     protected List<Post> allPosts;
+    private ProgressBar progressBar;
 
     public FeedFragment() {
     }
@@ -61,9 +63,11 @@ public class FeedFragment extends Fragment {
         });
 
         rvPosts = view.findViewById(R.id.rvMessages);
+
         // initialize the array that will hold posts and create a PostsAdapter
         StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         rvPosts.setLayoutManager(gridLayoutManager);
+        progressBar = view.findViewById(R.id.progressBar);
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
         // Setup refresh listener which triggers new data loading
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -96,7 +100,7 @@ public class FeedFragment extends Fragment {
         // specify what type of data we want to query - Post.class
         ParseQuery.getQuery(Post.class)
                 .include(Post.KEY_USER)
-                //.whereNotEqualTo(Post.KEY_USER, ParseUser.getCurrentUser())
+                .whereNotEqualTo(Post.KEY_USER, ParseUser.getCurrentUser())
                 .setLimit(20)
                 .setSkip(skip)
                 .addDescendingOrder("createdAt")
@@ -113,6 +117,7 @@ public class FeedFragment extends Fragment {
                 // save received posts to list and notify adapter of new data
                 allPosts.addAll(posts);
                 swipeContainer.setRefreshing(false);// swipeContainer.setRefreshing(false) once the network request has completed successfully.
+                progressBar.setVisibility(View.INVISIBLE);
                 adapter.notifyDataSetChanged();
             }
         });
