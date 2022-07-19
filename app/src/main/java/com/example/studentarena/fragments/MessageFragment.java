@@ -33,7 +33,6 @@ public class MessageFragment extends Fragment {
     private static final String TAG = "Message Fragment";
     RecyclerView rvMessages;
     protected MessageAdapter adapter;
-    //protected ChatAdapter cAdapter;
     private User currentUser;
     private List<Message> messageList;
 
@@ -64,12 +63,9 @@ public class MessageFragment extends Fragment {
     private void getMessage() {
         ParseQuery<Message> query1 = ParseQuery.getQuery(Message.class);
         query1.whereEqualTo(Message.SENDER_KEY, (User) ParseUser.getCurrentUser());
-        //query1.whereEqualTo(Message.POST_KEY + "." + "title", Post.KEY_TITLE);
 
         ParseQuery<Message> query2 = ParseQuery.getQuery(Message.class);
         query2.whereEqualTo(Message.RECEIVER_KEY, (User) ParseUser.getCurrentUser());
-
-        //query2.whereEqualTo(Message.POST_KEY + "." + "title", Post.KEY_TITLE);
 
         List<ParseQuery<Message>> list = new ArrayList<ParseQuery<Message>>();
         list.add(query1);
@@ -85,12 +81,18 @@ public class MessageFragment extends Fragment {
                 } else {
                     messageList.clear();
                     Set<String> set = new HashSet<String>();
-                    String postTitle;
+                    String postId;
                     for (Message m:output)
                     {
                         if (m.getSender().getObjectId().equals(ParseUser.getCurrentUser().getObjectId())) {
                             if(m.getTargetPost()!= null) {
-                                postTitle = m.getTargetPost().getTitle() + "" + m.getSender();
+                                if (ParseUser.getCurrentUser().getObjectId().equals(m.getSender().getObjectId())) {
+                                    postId = ParseUser.getCurrentUser().getObjectId() + " " +
+                                            m.getTargetPost().getObjectId() + " " + m.getReceiver().getObjectId();
+                                } else {
+                                    postId = ParseUser.getCurrentUser().getObjectId() + " " +
+                                            m.getTargetPost().getObjectId() + " " + m.getSender().getObjectId();
+                                }
                             }
                             else{
                                 continue;
@@ -98,33 +100,31 @@ public class MessageFragment extends Fragment {
 
                         } else {
                             if(m.getTargetPost()!= null){
-                            postTitle = m.getTargetPost().getTitle() + "" + m.getSender();
+                                if (ParseUser.getCurrentUser().getObjectId().equals(m.getSender().getObjectId())) {
+                                postId = ParseUser.getCurrentUser().getObjectId() + " " + m.getTargetPost().getObjectId() + " " + m.getReceiver().getObjectId();
+                            } else {
+                                postId = ParseUser.getCurrentUser().getObjectId() + " " + m.getTargetPost().getObjectId() + " " + m.getSender().getObjectId();
                             }
-                            else{
+                            } else{
                                 continue;
                             }
                         }
-
-                        if (set.contains(postTitle)) {
+                        if (set.contains(postId)) {
                             continue;
                         } else {
                             messageList.add(m);
-                            set.add(postTitle);
+                            set.add(postId);
                         }
-
                     }
                     if (messageList.size() == 0) {
                         rvMessages.setVisibility(View.GONE);
-                        //emptyViewMessage.setVisibility(View.VISIBLE);
                     }
-//                    set.clear();
+                    set.clear();
                     adapter.notifyDataSetChanged();
                 }
             }
-
             @Override
             public void postProcessFinish(ParseException e) {
-
             }
         });
         newMessageService.getMessage(query);

@@ -66,7 +66,6 @@ public class ChatActivity extends AppCompatActivity {
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ChatActivity.this);
         linearLayoutManager.setReverseLayout(true);
         rvChat.setLayoutManager(linearLayoutManager);
-
         // When send button is clicked, create message object on Parse
         ibSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,14 +106,10 @@ public class ChatActivity extends AppCompatActivity {
         // Construct query to execute
         ParseQuery<Message> query = ParseQuery.or(listOfquery);
          //Configure limit and sort order
-        //query.setLimit(MAX_CHAT_MESSAGES_TO_SHOW);
+        query.setLimit(MAX_CHAT_MESSAGES_TO_SHOW);
         query.include(Message.SENDER_KEY);
         query.include(Message.RECEIVER_KEY);
-
-        //query.whereEqualTo(Message.SENDER_KEY, ParseUser.getCurrentUser());
-        //query.whereEqualTo(Message.RECEIVER_KEY, ParseUser.getCurrentUser());
         query.whereEqualTo(Message.POST_KEY, targetPost);
-
 //      get the latest 50 messages, order will show up newest to oldest of this group
         query.orderByDescending("createdAt");
         query.findInBackground(new FindCallback<Message>() {

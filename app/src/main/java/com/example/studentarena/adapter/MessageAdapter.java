@@ -71,7 +71,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
                     Glide.with(context).load(post.getImage().getUrl()).circleCrop().into(itemMessageBinding.ivMessageSender);
                 }
             } else {
-                itemMessageBinding.tvMessageSenderName.setText(message.getSender().getUsername());
+                itemMessageBinding.tvMessageSenderName.setText(message.getSender().getUsername() +" • "+ post.getTitle());
                 if (message.getSender().getProfileImage() != null) {
                     Glide.with(context).load(post.getImage().getUrl()).circleCrop().into(itemMessageBinding.ivMessageSender);
                 }
@@ -86,8 +86,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         public void onClick(View v) {
             Intent i = new Intent(context, ChatActivity.class);
             User otherUser;
-            String userId = ParseUser.getCurrentUser().getObjectId().toString();
-            String messageSenderId = messages.get(getAdapterPosition()).getSender().getObjectId().toString();
+            String userId = ParseUser.getCurrentUser().getObjectId();
+            String messageSenderId = messages.get(getAdapterPosition()).getSender().getObjectId();
             if (userId.equals(messageSenderId))
             {
                 otherUser = messages.get(getAdapterPosition()).getReceiver();

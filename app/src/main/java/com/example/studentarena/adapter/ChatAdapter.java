@@ -106,41 +106,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
             } catch (ParseException e){
 
             }
-//            ParseFile image = (ParseFile) message.getSender().getProfileImage();
-////            if(image != null) {
-////                Glide.with(mContext).load(image.getUrl()).circleCrop().into(imageOther);
-////            }
-//            if (message.getSender().getProfileImage() != null) {
-//                imageOther.setVisibility(View.VISIBLE);
-//                Glide.with(mContext)
-//                        .load(image.getUrl())
-//                        .circleCrop() // create an effect of a round profile picture
-//                        .into(imageOther);
-//            } else {
-//                imageOther.setVisibility(View.GONE);
-//                //body.setText(message.getBody());
-//                //name.setText(message.getSender().getKeyFirstName());
-//            }
-//            ParseFile image = (ParseFile) otherUser.getProfileImage();
-//            Glide.with(mContext)
-//                    .load((image.getUrl()))
-//                    .circleCrop() // create an effect of a round profile picture
-//                    .into(imageOther);
             body.setText(message.getBody());
             tvUser_other.setText(message.getSender().getUsername());
             tvTimestamp_other.setText(GetRelativeTime.getSimpleTime(message.getCreatedAt()));
-
-//            if (message.getSender().getProfileImage() != null) {
-//                imageOther.setVisibility(View.VISIBLE);
-//                Glide.with(mContext)
-//                        .load(message.getSender().getProfileImage().getUrl())
-//                        .circleCrop() // create an effect of a round profile picture
-//                        .into(imageOther);
-//            } else {
-//                imageOther.setVisibility(View.GONE);
-//                body.setText(message.getBody());
-//                name.setText(message.getSender().getKeyFirstName());
-//            }
         }
     }
 
@@ -166,5 +134,4 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
             tvTimestamp_me.setText(GetRelativeTime.getSimpleTime(message.getCreatedAt()));
         }
     }
-
 }
