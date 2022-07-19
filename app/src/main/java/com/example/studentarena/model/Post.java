@@ -1,12 +1,8 @@
-package com.example.studentarena;
+package com.example.studentarena.model;
 
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
-import com.parse.ParseUser;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @ParseClassName("Post")
 public class Post extends ParseObject {
