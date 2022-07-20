@@ -72,7 +72,6 @@ public class FeedFragment extends Fragment {
         adapter = new PostsAdapter(getContext(), allPosts, activity);
         // set the adapter on the recycler view
         rvPosts.setAdapter(adapter);
-        //queryPosts();
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
         // Setup refresh listener which triggers new data loading
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
