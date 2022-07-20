@@ -14,6 +14,7 @@ import android.widget.Button;
 
 import com.example.studentarena.Post;
 import com.example.studentarena.R;
+import com.example.studentarena.SearchActivity;
 import com.example.studentarena.adapter.SearchAdapter;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -30,6 +31,8 @@ public class SearchFilterFragment extends DialogFragment {
     private TextInputEditText textInputEditTextMin;
     private TextInputEditText textInputEditTextMax;
     private Button ibDone;
+    public static double maxPrice = 100000000;
+    public static double minPrice = 0;
 
     public SearchFilterFragment(SearchAdapter adapter) {
         this.adapter = adapter;
@@ -68,21 +71,9 @@ public class SearchFilterFragment extends DialogFragment {
     private void search(){
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class)
                 .include(Post.KEY_USER);
-        Double minPrice = Double.parseDouble(String.valueOf(textInputEditTextMin.getText()));
-        Double maxPrice = Double.parseDouble(String.valueOf(textInputEditTextMax.getText()));
-        if (minPrice != null) {
-            query.whereGreaterThanOrEqualTo(Post.KEY_PRICE, minPrice);
-        }
-        if (maxPrice != null) {
-            query.whereLessThanOrEqualTo(Post.KEY_PRICE, maxPrice);
-        }
-        query.addAscendingOrder (Post.KEY_PRICE);
-        query.findInBackground(new FindCallback<Post>() {
-            @Override
-            public void done(List<Post> objects, ParseException e) {
-                adapter.addAll(objects);
-                dismiss();
-            }
-        });
+        minPrice = Double.parseDouble(String.valueOf(textInputEditTextMin.getText()));
+        maxPrice = Double.parseDouble(String.valueOf(textInputEditTextMax.getText()));
+        ((SearchActivity)getActivity()).queryPosts();
+        dismiss();
     }
 }

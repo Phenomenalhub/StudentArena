@@ -11,6 +11,7 @@ import android.widget.SearchView;
 import com.example.studentarena.adapter.SearchAdapter;
 import com.example.studentarena.fragments.SearchFilterFragment;
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 
@@ -24,6 +25,7 @@ public class SearchActivity extends AppCompatActivity {
     protected SearchAdapter adapter;
     protected List<Post> allPosts;
     private static final String TAG = "SearchFilterFragment";
+    private String searchString;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,25 +49,31 @@ public class SearchActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                queryPosts(query);
+                searchString = query;
+                queryPosts();
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                queryPosts(newText);
+                searchString = newText;
+                queryPosts();
                 return false;
             }
         });
     }
 
-    private void queryPosts(String query) {
+    public void queryPosts() {
         allPosts.clear();
-        ParseQuery.getQuery(Post.class)
-        .include(Post.KEY_USER)
-        .whereContains("title",query)
-        .addDescendingOrder("createdAt")
-        .findInBackground(new FindCallback<Post>() {
+        ParseQuery query2 = ParseQuery.getQuery(Post.class)
+        .include(Post.KEY_USER);
+        if(searchString != null && !searchString.isEmpty()) {
+            query2.whereContains("title",searchString);
+        }
+        query2.whereGreaterThanOrEqualTo(Post.KEY_PRICE, SearchFilterFragment.minPrice);
+        query2.whereLessThanOrEqualTo(Post.KEY_PRICE, SearchFilterFragment.maxPrice);
+        query2.addAscendingOrder("price");
+        query2.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> objects, ParseException e) {
                 allPosts.addAll(objects);
