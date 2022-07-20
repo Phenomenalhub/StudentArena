@@ -22,13 +22,25 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.studentarena.MainActivity;
 import com.example.studentarena.Post;
 import com.example.studentarena.R;
 import com.example.studentarena.User;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -50,9 +62,31 @@ public class ComposeFragment extends Fragment {
     private Button btnSubmit;
     private File photoFile;
     public String photoFileName = "profilephoto.jpg";
+    private Float latitude;
+    private Float longitude;
+    MainActivity activity;
+    boolean posted = false;
 
-    public ComposeFragment() {
+    public ComposeFragment(MainActivity mainActivity) {
+        activity = mainActivity;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (posted) {
+            etTitle.getEditText().setText("");
+            etDescription.getEditText().setText("");
+            etAddress.getEditText().setText("");
+            etCity.getEditText().setText("");
+            etContactinfo.getEditText().setText("");
+            etPrice.getEditText().setText("");
+            etState.getEditText().setText("");
+            etZipcode.getEditText().setText("");
+            ivPostImage.setImageResource(0);
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -96,13 +130,51 @@ public class ComposeFragment extends Fragment {
         });
     }
 
+    private void convertAddressToCoordinates(String addressURL, Post post){
+        String newAddressURL = addressURL.replace(' ', '+');
+        String url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + newAddressURL + "&key="+getString(R.string.key);
+        Log.i("String URL", newAddressURL);
+        RequestQueue queue = Volley.newRequestQueue(getActivity());
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                JsonObject jsonObject = new JsonParser().parse(response).getAsJsonObject();
+                JsonArray results = jsonObject.getAsJsonArray("results");
+                Log.i("Api result", results.toString());
+                JsonElement narrow = results.get(0);
+                JsonObject geometry = ((JsonObject) narrow).getAsJsonObject("geometry");
+                JsonObject location = geometry.getAsJsonObject("location");
+                latitude = location.getAsJsonPrimitive("lat").getAsFloat();
+                longitude = location.getAsJsonPrimitive("lng").getAsFloat();
+                ParseGeoPoint coordinate = new ParseGeoPoint(latitude, longitude);
+                post.setLocation(coordinate);
+                post.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                    }
+                });
+                activity.bottomNavigationView.setSelectedItemId(R.id.action_home);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i(TAG, "https error");
+            }
+        });
+        queue.add(stringRequest);
+    }
+
     private void savePost() {
         Post post = new Post();
         post.setDescription(etDescription.getEditText().getText().toString());
         post.setContact(etContactinfo.getEditText().getText().toString());
-        post.setPrice(etPrice.getEditText().getText().toString());
+        // post.setPrice(etPrice.getEditText().getText().toString());
         post.setTitle(etTitle.getEditText().getText().toString());
         post.setImage(new ParseFile(photoFile));
+        String address = etAddress.getEditText().getText().toString()+", "+ etCity.getEditText().getText().toString()+", "+ etState.getEditText().getText().toString();
+        Log.i("String result", address);
+        post.setAddress(address);
+        convertAddressToCoordinates(address, post);
         post.setUser((User)ParseUser.getCurrentUser());
         post.saveInBackground(new SaveCallback() {
             @Override
@@ -112,9 +184,10 @@ public class ComposeFragment extends Fragment {
                     Toast.makeText(getContext(), "Error while saving!", Toast.LENGTH_SHORT).show();
                 } else {
                     Log.i(TAG, "Post save was successful!!");
-                    getActivity().getSupportFragmentManager()
+                    posted = true;
+                    activity.getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.flContainer, new FeedFragment())
+                            .replace(R.id.flContainer, new FeedFragment(activity))
                             .commit();
                 }
             }
@@ -144,6 +217,7 @@ public class ComposeFragment extends Fragment {
                 Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
                 // RESIZE BITMAP, Load the taken image into a preview
                 ivPostImage.setImageBitmap(takenImage);
+                posted = false;
             } else { // Result was a failure
                 Toast.makeText(getContext(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }
