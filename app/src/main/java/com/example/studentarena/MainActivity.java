@@ -15,10 +15,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.GridView;
-import android.widget.ImageView;
 
 import com.example.studentarena.fragments.ComposeFragment;
 import com.example.studentarena.fragments.FeedFragment;
