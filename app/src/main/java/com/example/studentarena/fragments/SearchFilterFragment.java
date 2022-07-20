@@ -31,8 +31,8 @@ public class SearchFilterFragment extends DialogFragment {
     private TextInputEditText textInputEditTextMin;
     private TextInputEditText textInputEditTextMax;
     private Button ibDone;
-    public static double maxPrice = 100000000;
-    public static double minPrice = 0;
+    public static Double maxPrice = 100000000.0;
+    public static Double minPrice = 0.0;
 
     public SearchFilterFragment(SearchAdapter adapter) {
         this.adapter = adapter;
@@ -71,9 +71,11 @@ public class SearchFilterFragment extends DialogFragment {
     private void search(){
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class)
                 .include(Post.KEY_USER);
-        minPrice = Double.parseDouble(String.valueOf(textInputEditTextMin.getText()));
-        maxPrice = Double.parseDouble(String.valueOf(textInputEditTextMax.getText()));
-        ((SearchActivity)getActivity()).queryPosts();
+        if((!textInputEditTextMin.getText().toString().isEmpty()) && (!textInputEditTextMax.getText().toString().isEmpty())) {
+            minPrice = Double.parseDouble(String.valueOf(textInputEditTextMin.getText()));
+            maxPrice = Double.parseDouble(String.valueOf(textInputEditTextMax.getText()));
+            ((SearchActivity)getActivity()).queryPosts();
+        }
         dismiss();
     }
 }

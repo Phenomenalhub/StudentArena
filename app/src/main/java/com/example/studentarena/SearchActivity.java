@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.SearchView;
+import android.widget.TextView;
+
 import com.example.studentarena.adapter.SearchAdapter;
 import com.example.studentarena.fragments.SearchFilterFragment;
 import com.parse.FindCallback;
@@ -20,6 +22,7 @@ import java.util.List;
 
 public class SearchActivity extends AppCompatActivity {
     RecyclerView rvSearch;
+    private TextView tvResult;
     private SearchView searchView;
     private ImageButton filter;
     protected SearchAdapter adapter;
@@ -32,6 +35,7 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
         rvSearch = findViewById(R.id.rvSearch);
         searchView = findViewById(R.id.searchView);
+        tvResult= findViewById(R.id.tvResult);
         filter = findViewById(R.id.ibFilter);
 
         StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
@@ -78,6 +82,7 @@ public class SearchActivity extends AppCompatActivity {
             public void done(List<Post> objects, ParseException e) {
                 allPosts.addAll(objects);
                 adapter.notifyDataSetChanged();
+                tvResult.setVisibility(View.INVISIBLE);
             }
         });
     }

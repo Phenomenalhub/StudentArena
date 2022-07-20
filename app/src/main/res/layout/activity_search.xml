@@ -60,4 +60,16 @@
         app:layout_constraintTop_toBottomOf="@+id/postToolbar"
         app:layout_constraintVertical_bias="0.0" />
 
+    <TextView
+        android:id="@+id/tvResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="700dp"
+        android:text="No results...."
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/rvSearch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/postToolbar" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
