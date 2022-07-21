@@ -88,8 +88,8 @@ public class DetailActivity extends AppCompatActivity {
         // Make new massage
         Message newMessage = new Message();
         newMessage.setSender((User)  ParseUser.getCurrentUser());
-        newMessage.setReceiver(mPost.getUser());
         User otherUser = mPost.getUser();
+        newMessage.setReceiver(mPost.getUser());
         newMessage.setBody(message);
         newMessage.setTargetPost(mPost);
         newMessage.saveInBackground(new SaveCallback() {
@@ -99,9 +99,6 @@ public class DetailActivity extends AppCompatActivity {
                 intent.putExtra("targetPost", mPost);
                 startActivity(intent);
             }
-
-
         });
-
     }
 }
