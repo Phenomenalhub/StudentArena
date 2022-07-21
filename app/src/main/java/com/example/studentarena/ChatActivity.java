@@ -22,9 +22,13 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+import com.parse.livequery.ParseLiveQueryClient;
+import com.parse.livequery.SubscriptionHandling;
 
 import org.parceler.Parcels;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +54,7 @@ public class ChatActivity extends AppCompatActivity {
         if (otherUser != null) {
             setupMessagePosting(otherUser);
         }
+
     }
     // Setup message field and posting
     void setupMessagePosting(User otherUser) {
@@ -89,6 +94,36 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
         refreshMessages();
+        String websocketUrl = "wss://studentarena.b4a.io";
+
+        ParseLiveQueryClient parseLiveQueryClient = null;
+        try {
+            parseLiveQueryClient = ParseLiveQueryClient.Factory.getClient(new URI(websocketUrl));
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        ParseQuery<Message> parseQuery = ParseQuery.getQuery(Message.class);
+        // This query can even be more granular (i.e. only refresh if the entry was added by some other user)
+        // parseQuery.whereNotEqualTo(USER_ID_KEY, ParseUser.getCurrentUser().getObjectId());
+
+        // Connect to Parse server
+        SubscriptionHandling<Message> subscriptionHandling = parseLiveQueryClient.subscribe(parseQuery);
+
+        // Listen for CREATE events on the Message class
+        subscriptionHandling.handleEvent(SubscriptionHandling.Event.CREATE, (query, object) -> {
+            chats.add(0, object);
+
+            // RecyclerView updates need to be run on the UI thread
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.i("live query", "run:");
+                    cAdapter.notifyDataSetChanged();
+                    rvChat.scrollToPosition(0);
+                }
+            });
+        });
     }
     // Query messages from Parse so we can load them into the chat adapter
     void refreshMessages() {
