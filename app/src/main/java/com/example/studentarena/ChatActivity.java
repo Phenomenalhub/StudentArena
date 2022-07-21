@@ -18,6 +18,7 @@ import com.example.studentarena.model.Message;
 import com.example.studentarena.model.Post;
 import com.example.studentarena.model.User;
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -104,21 +105,18 @@ public class ChatActivity extends AppCompatActivity {
         }
 
         ParseQuery<Message> parseQuery = ParseQuery.getQuery(Message.class);
-        // This query can even be more granular (i.e. only refresh if the entry was added by some other user)
-        // parseQuery.whereNotEqualTo(USER_ID_KEY, ParseUser.getCurrentUser().getObjectId());
-
         // Connect to Parse server
         SubscriptionHandling<Message> subscriptionHandling = parseLiveQueryClient.subscribe(parseQuery);
-
         // Listen for CREATE events on the Message class
         subscriptionHandling.handleEvent(SubscriptionHandling.Event.CREATE, (query, object) -> {
-            chats.add(0, object);
-
+            Message newMessage = (Message) object;
+            if (!newMessage.getSender().getObjectId().equals(ParseUser.getCurrentUser().getObjectId())) {
+                chats.add(0, object);
+            }
             // RecyclerView updates need to be run on the UI thread
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Log.i("live query", "run:");
                     cAdapter.notifyDataSetChanged();
                     rvChat.scrollToPosition(0);
                 }
