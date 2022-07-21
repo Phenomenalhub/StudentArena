@@ -21,7 +21,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,10 +29,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
 import com.example.studentarena.EndlessRecyclerViewScrollListener;
 import com.example.studentarena.LoginActivity;
+import com.example.studentarena.MainActivity;
 import com.example.studentarena.Post;
 import com.example.studentarena.R;
 import com.example.studentarena.User;
 import com.example.studentarena.adapter.PostsAdapter;
+import com.example.studentarena.adapter.ProfileAdapter;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -54,13 +55,14 @@ public class ProfileFragment extends Fragment {
     private File photoFile;
     public String photoFileName = "photo.jpg";
     private User user = (User) ParseUser.getCurrentUser();
-    RecyclerView rvPosts;
-    protected PostsAdapter adapter;
+    RecyclerView rvProfile;
+    protected ProfileAdapter adapter;
     protected List<Post> allPosts;
     private static final String KEY_PROFILE_IMAGE = "profile_image";
+    private MainActivity activity;
 
     public ProfileFragment() {
-        // Required empty public constructor
+        // Required empty public constructor;
     }
 
     @Override
@@ -96,10 +98,10 @@ public class ProfileFragment extends Fragment {
         if (userProfileImg != null) {
             Glide.with(view).load(userProfileImg.getUrl()).centerCrop().circleCrop().override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).into(ivProfileImage);
         };
-
-        rvPosts =view.findViewById(R.id.rvPosts);
-        StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        rvPosts.setLayoutManager(gridLayoutManager);
+        
+        rvProfile =view.findViewById(R.id.rvProfile);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        rvProfile.setLayoutManager(linearLayoutManager);
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
         // Setup refresh listener which triggers new data loading
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -116,16 +118,16 @@ public class ProfileFragment extends Fragment {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
         allPosts = new ArrayList<>();
-        adapter = new PostsAdapter(getContext(), allPosts);
+        adapter = new ProfileAdapter(getContext(), allPosts);
         // set the adapter on the recycler view
-        rvPosts.setAdapter(adapter);
-        scrollListener = new EndlessRecyclerViewScrollListener(gridLayoutManager) {
+        rvProfile.setAdapter(adapter);
+        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 queryPosts(totalItemsCount);
             }
         };
-        rvPosts.addOnScrollListener(scrollListener);
+        rvProfile.addOnScrollListener(scrollListener);
         queryPosts(0);
     }
 

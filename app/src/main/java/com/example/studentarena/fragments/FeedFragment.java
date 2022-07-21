@@ -1,5 +1,6 @@
 package com.example.studentarena.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -14,12 +15,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 
 import com.example.studentarena.EndlessRecyclerViewScrollListener;
 import com.example.studentarena.LoginActivity;
+import com.example.studentarena.MainActivity;
 import com.example.studentarena.Post;
 import com.example.studentarena.R;
 import com.example.studentarena.SearchActivity;
@@ -39,8 +38,10 @@ public class FeedFragment extends Fragment {
     RecyclerView rvPosts;
     protected PostsAdapter adapter;
     protected List<Post> allPosts;
+    private MainActivity activity;
 
-    public FeedFragment() {
+    public FeedFragment(MainActivity mainActivity) {
+        activity = mainActivity;
     }
 
     @Override
@@ -75,6 +76,10 @@ public class FeedFragment extends Fragment {
         // initialize the array that will hold posts and create a PostsAdapter
         StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         rvPosts.setLayoutManager(gridLayoutManager);
+        allPosts = new ArrayList<>();
+        adapter = new PostsAdapter(getContext(), allPosts, activity);
+        // set the adapter on the recycler view
+        rvPosts.setAdapter(adapter);
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
         // Setup refresh listener which triggers new data loading
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -90,10 +95,6 @@ public class FeedFragment extends Fragment {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
-        allPosts = new ArrayList<>();
-        adapter = new PostsAdapter(getContext(), allPosts);
-        // set the adapter on the recycler view
-        rvPosts.setAdapter(adapter);
         scrollListener = new EndlessRecyclerViewScrollListener(gridLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
@@ -126,5 +127,9 @@ public class FeedFragment extends Fragment {
                 adapter.notifyDataSetChanged();
             }
         });
+    }
+
+    public void notifyAdapter() {
+        adapter.notifyDataSetChanged();
     }
 }

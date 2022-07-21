@@ -1,6 +1,7 @@
 package com.example.studentarena;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.parse.Parse;
 import com.parse.ParseObject;
