@@ -1,7 +1,12 @@
 <resources>
     <string name="app_name">StudentArena</string>
+    <string name="Post_Item">Post Item</string>
+    <string name="price">Price</string>
+    <string name="done">Done</string>
+    <string name="Take_Picture">Take Picture</string>
     <string name="post_Item">Post Item</string>
     <string name="you">You</string>
+    <string name="results">No results....</string>
     <string name="log_out">Log out</string>
     <string name="full_name">Full name</string>
     <string name="username">Username</string>
@@ -14,7 +19,6 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 </resources>
