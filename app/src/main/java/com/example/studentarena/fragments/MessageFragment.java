@@ -84,31 +84,16 @@ public class MessageFragment extends Fragment {
                     String postId;
                     for (Message m:output)
                     {
-                        if (m.getSender().getObjectId().equals(ParseUser.getCurrentUser().getObjectId())) {
-                            if(m.getTargetPost()!= null) {
-                                if (ParseUser.getCurrentUser().getObjectId().equals(m.getSender().getObjectId())) {
-                                    postId = ParseUser.getCurrentUser().getObjectId() + " " +
-                                            m.getTargetPost().getObjectId() + " " + m.getReceiver().getObjectId();
-                                } else {
-                                    postId = ParseUser.getCurrentUser().getObjectId() + " " +
-                                            m.getTargetPost().getObjectId() + " " + m.getSender().getObjectId();
-                                }
-                            }
-                            else{
+                            if (m.getTargetPost() == null) {
                                 continue;
                             }
-
-                        } else {
-                            if(m.getTargetPost()!= null){
-                                if (ParseUser.getCurrentUser().getObjectId().equals(m.getSender().getObjectId())) {
-                                postId = ParseUser.getCurrentUser().getObjectId() + " " + m.getTargetPost().getObjectId() + " " + m.getReceiver().getObjectId();
+                            if (ParseUser.getCurrentUser().getObjectId().equals(m.getSender().getObjectId())) {
+                                postId = ParseUser.getCurrentUser().getObjectId() + " " +
+                                        m.getTargetPost().getObjectId() + " " + m.getReceiver().getObjectId();
                             } else {
-                                postId = ParseUser.getCurrentUser().getObjectId() + " " + m.getTargetPost().getObjectId() + " " + m.getSender().getObjectId();
+                                postId = ParseUser.getCurrentUser().getObjectId() + " " +
+                                        m.getTargetPost().getObjectId() + " " + m.getSender().getObjectId();
                             }
-                            } else{
-                                continue;
-                            }
-                        }
                         if (set.contains(postId)) {
                             continue;
                         } else {

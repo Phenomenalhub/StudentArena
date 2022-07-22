@@ -110,7 +110,7 @@ public class ChatActivity extends AppCompatActivity {
         // Listen for CREATE events on the Message class
         subscriptionHandling.handleEvent(SubscriptionHandling.Event.CREATE, (query, object) -> {
             Message newMessage = (Message) object;
-            if (!newMessage.getSender().getObjectId().equals(ParseUser.getCurrentUser().getObjectId())) {
+            if (newMessage.getSender().getObjectId().equals(otherUser.getObjectId()) && newMessage.getTargetPost().getObjectId().equals(targetPost.getObjectId())) {
                 chats.add(0, object);
             }
             // RecyclerView updates need to be run on the UI thread
