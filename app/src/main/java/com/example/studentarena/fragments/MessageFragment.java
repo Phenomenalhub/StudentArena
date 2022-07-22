@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,6 +99,7 @@ public class MessageFragment extends Fragment {
                             continue;
                         } else {
                             messageList.add(m);
+                            Log.i(TAG, "getProcessFinish: " + m.getCreatedAt());
                             set.add(postId);
                         }
                     }

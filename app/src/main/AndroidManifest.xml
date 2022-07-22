@@ -64,6 +64,8 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+        <meta-data android:name="com.parse.push.gcm_sender_id"
+            android:value="710863210243" />
     </application>
 
 </manifest>

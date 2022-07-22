@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,8 +12,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.studentarena.adapter.ChatAdapter;
 import com.example.studentarena.model.Message;
 import com.example.studentarena.model.Post;
@@ -38,10 +43,12 @@ public class ChatActivity extends AppCompatActivity {
     RecyclerView rvChat;
     private Button ibSend;
     private EditText etMessage;
+    private TextView tvChatUsername;
     protected ChatAdapter cAdapter;
     private List<Message> chats;
     boolean mFirstLoad;
     private ImageView ivProfileImage;
+    private ImageView chatProfileImage;
     public User otherUser;
     public Post targetPost;
     Intent intent;
@@ -50,8 +57,13 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        chatProfileImage = findViewById(R.id.chatProfileImage);
+        tvChatUsername = findViewById(R.id.tvChatUsername);
         otherUser = (User) Parcels.unwrap(getIntent().getParcelableExtra("otherUser"));
         targetPost = (getIntent().getParcelableExtra("targetPost"));
+        if (targetPost.getImage() != null){
+            Glide.with(this).load(targetPost.getImage().getUrl()).circleCrop().into(chatProfileImage);}
+        tvChatUsername.setText(targetPost.getTitle());
         if (otherUser != null) {
             setupMessagePosting(otherUser);
         }

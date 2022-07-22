@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.studentarena.utilities.GetRelativeTime;
 import com.example.studentarena.R;
 import com.example.studentarena.model.Message;
@@ -88,7 +90,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         TextView body;
         TextView tvTimestamp_other;
         TextView tvUser_other;
-        private Context mContext;
 
         public IncomingChatViewHolder(View itemView) {
             super(itemView);
@@ -103,6 +104,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
             User otherUser = (User) new User();
             try{
                 otherUser = (User) message.getSender().fetchIfNeeded();
+                if (otherUser.getProfileImage() != null){
+                    imageOther.setVisibility(View.VISIBLE);
+                    Glide.with(mContext).load(otherUser.getProfileImage().getUrl()).transform(new CenterCrop(),new RoundedCorners(25)).into(imageOther);
+                } else{
+                    imageOther.setVisibility(View.GONE);
+                }
             } catch (ParseException e){
 
             }
