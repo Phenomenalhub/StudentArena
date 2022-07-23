@@ -19,7 +19,7 @@ Allows students access a variety of property and accessories within their circle
 - **Mobile:** Mobile is essential checking the latest products with Location GPS. The camera is used to take pictures of items for sale.
 - **Story:** Easier transaction and more availability of student required items
 - **Market:** Students that has interest in buying or selling an item. Student stores could later be monetized later for post on the marketplace. 
-- **Habit:** Post notification to remind them of item visited. Could expand to direct messaging for users.
+- **Habit:** Direct messaging for users.
 - **Scope:** V1 would allow students to post things for sale like books, accessories, post accomodation off campus (Option for shared appartment). V2 would incorperate filters to search items.
 
 ## Product Spec

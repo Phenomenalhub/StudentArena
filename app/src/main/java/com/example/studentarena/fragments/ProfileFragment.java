@@ -10,8 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -19,6 +21,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,9 +58,10 @@ public class ProfileFragment extends Fragment {
     protected ProfileAdapter adapter;
     protected List<Post> allPosts;
     private static final String KEY_PROFILE_IMAGE = "profile_image";
+    private MainActivity activity;
 
     public ProfileFragment() {
-        // Required empty public constructor
+        // Required empty public constructor;
     }
 
     @Override

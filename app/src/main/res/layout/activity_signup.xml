@@ -46,7 +46,7 @@
         android:hint="First Name"
         android:inputType="textMultiLine"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewlogo" />
 
     <EditText
         android:id="@+id/etLastName"
@@ -61,7 +61,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.555"
         app:layout_constraintStart_toEndOf="@+id/etFirstName"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewlogo" />
 
     <EditText
         android:id="@+id/etEmail"
@@ -90,7 +90,7 @@
         app:layout_constraintTop_toBottomOf="@+id/etPassword" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imageViewlogo"
         android:layout_width="250dp"
         android:layout_height="150dp"
         android:layout_marginTop="42dp"

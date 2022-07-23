@@ -1,6 +1,7 @@
 package com.example.studentarena;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.example.studentarena.model.Message;
 import com.example.studentarena.model.Post;

@@ -1,8 +1,8 @@
 package com.example.studentarena.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,38 +15,33 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.studentarena.DetailActivity;
-import com.example.studentarena.MainActivity;
 import com.example.studentarena.Post;
-import com.example.studentarena.model.Post;
 import com.example.studentarena.R;
 import com.parse.ParseFile;
-import com.parse.ParseGeoPoint;
-
+import com.parse.ParseUser;
 import org.parceler.Parcels;
 import java.util.List;
 
-public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
+public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
     private Context context;
     private List<Post> posts;
-    private MainActivity activity;
 
     @NonNull
     @Override
-    public PostsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_post, parent, false);
+    public SearchAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.item_search, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PostsAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull SearchAdapter.ViewHolder holder, int position) {
         Post post = posts.get(position);
         holder.bind(post);
 
     }
-    public PostsAdapter(Context context, List<Post> posts, MainActivity activity) {
+    public SearchAdapter(Context context, List<Post> posts) {
         this.context = context;
         this.posts = posts;
-        this.activity = activity;
     }
 
     @Override
@@ -54,19 +49,21 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         return posts.size();
     }
 
+    public void addAll(List<Post> objects) {
+        posts.addAll(objects);
+        notifyDataSetChanged();
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView ivImage;
         private TextView tvPrice;
         private TextView tvTitle;
-        private TextView tvMiles;
-        private int distanceToUser;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivImage = itemView.findViewById(R.id.ivImage);
             tvPrice = itemView.findViewById(R.id.tvPrice);
             tvTitle = itemView.findViewById(R.id.tvTitle);
-            tvMiles = itemView.findViewById(R.id.tvMiles);
         }
         public void bind(Post post) {
             // Bind the post data to the view elements
@@ -83,22 +80,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(context, DetailActivity.class);
-
                     i.putExtra("Posts", Parcels.wrap(post));
                     context.startActivity(i);
                 }
             });
-
-            ParseGeoPoint postLocation = post.getLocation();
-            setDistanceFromUser(postLocation);
-        }
-
-        private void setDistanceFromUser(ParseGeoPoint postLocation) {
-            ParseGeoPoint userLocation = activity.getUserLocation();
-            if (userLocation != null) {
-                distanceToUser = (int) postLocation.distanceInMilesTo(userLocation);
-                tvMiles.setText(distanceToUser + " mi.");
-            }
         }
     }
 }

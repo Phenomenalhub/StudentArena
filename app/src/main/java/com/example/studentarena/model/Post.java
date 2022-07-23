@@ -2,6 +2,7 @@ package com.example.studentarena.model;
 
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 
 @ParseClassName("Post")
@@ -13,6 +14,8 @@ public class Post extends ParseObject {
     public static final String KEY_PRICE = "price";
     public static final String KEY_IMAGE = "image";
     public static final String KEY_USER = "user";
+    public static final String KEY_ADDRESS = "address";
+    public static final String KEY_LOCATION = "location";
 
     public void setDescription(String description){
         put(KEY_DESCRIPTION, description);
@@ -31,9 +34,9 @@ public class Post extends ParseObject {
     }
     public void setContact(String contact){put(KEY_CONTACT, contact);}
     public void setTitle(String title){put(KEY_TITLE, title);}
-    public void setPrice(String price){put(KEY_PRICE, price);}
-    public String getPrice() {
-        return getString(KEY_PRICE);
+    public void setPrice(Double price){put(KEY_PRICE, price);}
+    public Double getPrice() {
+        return getDouble(KEY_PRICE);
     }
     public String getDescription(){
         return getString(KEY_DESCRIPTION);
@@ -44,5 +47,9 @@ public class Post extends ParseObject {
     public String getTitle() {
         return getString(KEY_TITLE);
     }
+    public String getAddress(){return getString(KEY_ADDRESS);}
+    public void setAddress(String address){put(KEY_ADDRESS, address);}
+    public ParseGeoPoint getLocation(){return getParseGeoPoint(KEY_LOCATION);}
+    public void setLocation(ParseGeoPoint parseGeoPoint){put(KEY_LOCATION, parseGeoPoint);}
 }
 
