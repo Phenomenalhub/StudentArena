@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 public class MessageFragment extends Fragment {
     private static final String TAG = "Message Fragment";
@@ -36,6 +38,8 @@ public class MessageFragment extends Fragment {
     protected MessageAdapter adapter;
     private User currentUser;
     private List<Message> messageList;
+    final long POLL_INTERVAL = TimeUnit.SECONDS.toMillis(5);
+    Handler myHandler = new android.os.Handler();
 
     public MessageFragment() {
         // Required empty public constructor
@@ -59,6 +63,25 @@ public class MessageFragment extends Fragment {
         rvMessages.setLayoutManager(new LinearLayoutManager(getContext()));
         currentUser = (User) ParseUser.getCurrentUser();
         getMessage();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Runnable mRefreshMessagesRunnable = new Runnable() {
+            @Override
+            public void run() {
+                getMessage();
+                myHandler.postDelayed(this, POLL_INTERVAL);
+            }
+        };
+        myHandler.postDelayed(mRefreshMessagesRunnable, POLL_INTERVAL);
+    }
+
+    @Override
+    public void onPause() {
+        myHandler.removeCallbacksAndMessages(null);
+        super.onPause();
     }
 
     private void getMessage() {
