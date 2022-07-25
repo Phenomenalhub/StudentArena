@@ -16,7 +16,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.studentarena.DetailActivity;
 import com.example.studentarena.MainActivity;
-import com.example.studentarena.Post;
+import com.example.studentarena.model.Post;
 import com.example.studentarena.R;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
@@ -82,6 +82,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(context, DetailActivity.class);
+
                     i.putExtra("Posts", Parcels.wrap(post));
                     context.startActivity(i);
                 }

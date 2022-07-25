@@ -2,59 +2,47 @@ package com.example.studentarena.fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.studentarena.R;
+import com.example.studentarena.adapter.MessageAdapter;
+import com.example.studentarena.model.Message;
+import com.example.studentarena.model.Post;
+import com.example.studentarena.model.User;
+import com.example.studentarena.utilities.MessageInterface;
+import com.example.studentarena.utilities.MessageServices;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MessageFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
 public class MessageFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private static final String TAG = "Message Fragment";
+    RecyclerView rvMessages;
+    protected MessageAdapter adapter;
+    private User currentUser;
+    private List<Message> messageList;
+    final long POLL_INTERVAL = TimeUnit.SECONDS.toMillis(5);
+    Handler myHandler = new android.os.Handler();
 
     public MessageFragment() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MessageFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MessageFragment newInstance(String param1, String param2) {
-        MessageFragment fragment = new MessageFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -62,5 +50,93 @@ public class MessageFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_message, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        messageList = new ArrayList<>();
+        adapter = new MessageAdapter(messageList,getContext());
+        rvMessages = view.findViewById(R.id.rvMessages);
+        rvMessages.setAdapter(adapter);
+        rvMessages.setHasFixedSize(true);
+        rvMessages.setLayoutManager(new LinearLayoutManager(getContext()));
+        currentUser = (User) ParseUser.getCurrentUser();
+        getMessage();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Runnable mRefreshMessagesRunnable = new Runnable() {
+            @Override
+            public void run() {
+                getMessage();
+                myHandler.postDelayed(this, POLL_INTERVAL);
+            }
+        };
+        myHandler.postDelayed(mRefreshMessagesRunnable, POLL_INTERVAL);
+    }
+
+    @Override
+    public void onPause() {
+        myHandler.removeCallbacksAndMessages(null);
+        super.onPause();
+    }
+
+    private void getMessage() {
+        ParseQuery<Message> query1 = ParseQuery.getQuery(Message.class);
+        query1.whereEqualTo(Message.SENDER_KEY, (User) ParseUser.getCurrentUser());
+
+        ParseQuery<Message> query2 = ParseQuery.getQuery(Message.class);
+        query2.whereEqualTo(Message.RECEIVER_KEY, (User) ParseUser.getCurrentUser());
+
+        List<ParseQuery<Message>> list = new ArrayList<ParseQuery<Message>>();
+        list.add(query1);
+        list.add(query2);
+
+        ParseQuery<Message> query = ParseQuery.or(list);
+        query.include(Message.POST_KEY);
+        MessageServices newMessageService = new MessageServices(new MessageInterface() {
+            @Override
+            public void getProcessFinish(List<Message> output) {
+                if (output == null) {
+                    Toast.makeText(getContext(), "Message Loading Failed!", Toast.LENGTH_SHORT).show();
+                } else {
+                    messageList.clear();
+                    Set<String> set = new HashSet<String>();
+                    String postId;
+                    for (Message m:output)
+                    {
+                            if (m.getTargetPost() == null) {
+                                continue;
+                            }
+                            if (ParseUser.getCurrentUser().getObjectId().equals(m.getSender().getObjectId())) {
+                                postId = ParseUser.getCurrentUser().getObjectId() + " " +
+                                        m.getTargetPost().getObjectId() + " " + m.getReceiver().getObjectId();
+                            } else {
+                                postId = ParseUser.getCurrentUser().getObjectId() + " " +
+                                        m.getTargetPost().getObjectId() + " " + m.getSender().getObjectId();
+                            }
+                        if (set.contains(postId)) {
+                            continue;
+                        } else {
+                            messageList.add(m);
+                            Log.i(TAG, "getProcessFinish: " + m.getCreatedAt());
+                            set.add(postId);
+                        }
+                    }
+                    if (messageList.size() == 0) {
+                        rvMessages.setVisibility(View.GONE);
+                    }
+                    set.clear();
+                    adapter.notifyDataSetChanged();
+                }
+            }
+            @Override
+            public void postProcessFinish(ParseException e) {
+            }
+        });
+        newMessageService.getMessage(query);
     }
 }

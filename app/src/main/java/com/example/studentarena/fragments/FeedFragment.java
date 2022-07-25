@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -15,11 +16,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.example.studentarena.EndlessRecyclerViewScrollListener;
 import com.example.studentarena.LoginActivity;
+import com.example.studentarena.model.Post;
 import com.example.studentarena.MainActivity;
-import com.example.studentarena.Post;
 import com.example.studentarena.R;
 import com.example.studentarena.SearchActivity;
 import com.example.studentarena.adapter.PostsAdapter;
@@ -38,6 +40,7 @@ public class FeedFragment extends Fragment {
     RecyclerView rvPosts;
     protected PostsAdapter adapter;
     protected List<Post> allPosts;
+    private ProgressBar progressBar;
     private MainActivity activity;
 
     public FeedFragment(MainActivity mainActivity) {
@@ -76,6 +79,7 @@ public class FeedFragment extends Fragment {
         // initialize the array that will hold posts and create a PostsAdapter
         StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         rvPosts.setLayoutManager(gridLayoutManager);
+        progressBar = view.findViewById(R.id.progressBar);
         allPosts = new ArrayList<>();
         adapter = new PostsAdapter(getContext(), allPosts, activity);
         // set the adapter on the recycler view
@@ -108,6 +112,7 @@ public class FeedFragment extends Fragment {
         // specify what type of data we want to query - Post.class
         ParseQuery.getQuery(Post.class)
                 .include(Post.KEY_USER)
+                .whereNotEqualTo(Post.KEY_USER,ParseUser.getCurrentUser())
                 .setLimit(20)
                 .setSkip(skip)
                 .addDescendingOrder("createdAt")
@@ -124,6 +129,7 @@ public class FeedFragment extends Fragment {
                 // save received posts to list and notify adapter of new data
                 allPosts.addAll(posts);
                 swipeContainer.setRefreshing(false);// swipeContainer.setRefreshing(false) once the network request has completed successfully.
+                progressBar.setVisibility(View.GONE);
                 adapter.notifyDataSetChanged();
             }
         });

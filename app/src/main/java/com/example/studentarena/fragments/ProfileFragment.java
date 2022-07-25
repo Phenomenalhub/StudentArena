@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,10 +31,9 @@ import com.bumptech.glide.request.target.Target;
 import com.example.studentarena.EndlessRecyclerViewScrollListener;
 import com.example.studentarena.LoginActivity;
 import com.example.studentarena.MainActivity;
-import com.example.studentarena.Post;
+import com.example.studentarena.model.Post;
 import com.example.studentarena.R;
-import com.example.studentarena.User;
-import com.example.studentarena.adapter.PostsAdapter;
+import com.example.studentarena.model.User;
 import com.example.studentarena.adapter.ProfileAdapter;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -98,7 +98,7 @@ public class ProfileFragment extends Fragment {
         if (userProfileImg != null) {
             Glide.with(view).load(userProfileImg.getUrl()).centerCrop().circleCrop().override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).into(ivProfileImage);
         };
-        
+
         rvProfile =view.findViewById(R.id.rvProfile);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         rvProfile.setLayoutManager(linearLayoutManager);

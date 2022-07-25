@@ -1,11 +1,13 @@
-package com.example.studentarena;
+package com.example.studentarena.model;
+
+import android.os.Parcelable;
 
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
 
 @ParseClassName("_User")
-public class User extends ParseUser {
+public class User extends ParseUser implements Parcelable {
     public static final String KEY_FIRST_NAME = "firstName";
     public static final String KEY_LAST_NAME = "lastName";
     public static final String KEY_PROFILE_IMAGE = "profile_image";
@@ -23,5 +25,8 @@ public class User extends ParseUser {
     public void setKeyLastName(String lastName)
     {
         put(KEY_LAST_NAME,lastName);
+    }
+    public String getKeyFirstName() {
+        return getString(KEY_FIRST_NAME);
     }
 }

@@ -12,10 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.example.studentarena.Post;
+//import com.example.studentarena.Post;
 import com.example.studentarena.R;
 import com.example.studentarena.SearchActivity;
 import com.example.studentarena.adapter.SearchAdapter;
+import com.example.studentarena.model.Post;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.parse.FindCallback;
