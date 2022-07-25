@@ -22,7 +22,6 @@ import com.example.studentarena.EndlessRecyclerViewScrollListener;
 import com.example.studentarena.LoginActivity;
 import com.example.studentarena.model.Post;
 import com.example.studentarena.MainActivity;
-import com.example.studentarena.Post;
 import com.example.studentarena.R;
 import com.example.studentarena.SearchActivity;
 import com.example.studentarena.adapter.PostsAdapter;
@@ -113,6 +112,7 @@ public class FeedFragment extends Fragment {
         // specify what type of data we want to query - Post.class
         ParseQuery.getQuery(Post.class)
                 .include(Post.KEY_USER)
+                .whereNotEqualTo(Post.KEY_USER,ParseUser.getCurrentUser())
                 .setLimit(20)
                 .setSkip(skip)
                 .addDescendingOrder("createdAt")
@@ -129,6 +129,7 @@ public class FeedFragment extends Fragment {
                 // save received posts to list and notify adapter of new data
                 allPosts.addAll(posts);
                 swipeContainer.setRefreshing(false);// swipeContainer.setRefreshing(false) once the network request has completed successfully.
+                progressBar.setVisibility(View.GONE);
                 adapter.notifyDataSetChanged();
             }
         });

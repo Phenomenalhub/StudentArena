@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.studentarena.adapter.SearchAdapter;
 import com.example.studentarena.fragments.SearchFilterFragment;
+import com.example.studentarena.model.Post;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;

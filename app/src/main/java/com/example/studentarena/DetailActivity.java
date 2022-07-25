@@ -58,7 +58,7 @@ public class DetailActivity extends AppCompatActivity {
         mPost = Parcels.unwrap(getIntent().getParcelableExtra("Posts"));
         tvTitle.setText(mPost.getTitle());
         tvPrice.setText("$" + mPost.getPrice());
-        tvContactInfo.setText(mPost.getContact());
+        tvContactInfo.setText("Contact: " + mPost.getContact());
         tvDescription.setText(mPost.getDescription());
         tvUsername.setText(mPost.getUser().getUsername());
         tvCreatedAt.setText(GetRelativeTime.getSimpleTime(mPost.getCreatedAt()));

@@ -30,6 +30,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
 import com.example.studentarena.EndlessRecyclerViewScrollListener;
 import com.example.studentarena.LoginActivity;
+import com.example.studentarena.MainActivity;
 import com.example.studentarena.model.Post;
 import com.example.studentarena.R;
 import com.example.studentarena.model.User;

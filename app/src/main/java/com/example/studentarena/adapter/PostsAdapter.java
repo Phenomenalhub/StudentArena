@@ -16,7 +16,6 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.studentarena.DetailActivity;
 import com.example.studentarena.MainActivity;
-import com.example.studentarena.Post;
 import com.example.studentarena.model.Post;
 import com.example.studentarena.R;
 import com.parse.ParseFile;
