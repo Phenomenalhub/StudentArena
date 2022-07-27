@@ -67,7 +67,6 @@ public class ChatActivity extends AppCompatActivity {
         if (otherUser != null) {
             setupMessagePosting(otherUser);
         }
-
     }
     // Setup message field and posting
     void setupMessagePosting(User otherUser) {

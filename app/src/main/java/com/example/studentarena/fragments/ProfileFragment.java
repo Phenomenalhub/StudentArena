@@ -56,7 +56,7 @@ public class ProfileFragment extends Fragment {
     public String photoFileName = "photo.jpg";
     private User user = (User) ParseUser.getCurrentUser();
     RecyclerView rvProfile;
-    protected ProfileAdapter adapter;
+    public static ProfileAdapter adapter;
     protected List<Post> allPosts;
     private static final String KEY_PROFILE_IMAGE = "profile_image";
     private MainActivity activity;
@@ -195,5 +195,11 @@ public class ProfileFragment extends Fragment {
                 adapter.notifyDataSetChanged();
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
     }
 }
