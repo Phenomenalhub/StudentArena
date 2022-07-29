@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.ComposeFragment">
@@ -87,7 +88,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/etCity"
-            android:layout_width="120dp"
+            android:layout_width="180dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:hint="City"
@@ -96,42 +97,45 @@
             app:layout_constraintTop_toBottomOf="@+id/etAddress">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="120dp"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/etState"
-            android:layout_width="120dp"
+            android:layout_width="188dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:hint="State"
             android:inputType="textMultiLine"
+            android:hint="State"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             app:layout_constraintStart_toEndOf="@+id/etCity"
             app:layout_constraintTop_toBottomOf="@+id/etAddress">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="120dp"
+            <AutoCompleteTextView
+                android:id="@+id/tvAutoComplete"
+                android:layout_width="188dp"
                 android:layout_height="wrap_content"
+                android:inputType="none"
                 app:layout_constraintStart_toEndOf="@+id/etCity" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/etZipcode"
-            android:layout_width="120dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:hint="Zipcode"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/etState"
-            app:layout_constraintTop_toBottomOf="@+id/etAddress">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etState">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="120dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toEndOf="@+id/etState"
+                app:layout_constraintStart_toEndOf="parent"
                 android:inputType="number"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -146,7 +150,7 @@
             android:inputType="textMultiLine"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etState">
+            app:layout_constraintTop_toBottomOf="@+id/etZipcode">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -154,7 +158,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/btnCaptureImage"
+            android:id="@+id/btnUploadImage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -175,7 +179,7 @@
             android:src="@drawable/camera"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnCaptureImage" />
+            app:layout_constraintTop_toBottomOf="@+id/btnUploadImage" />
 
         <Button
             android:id="@+id/btnSubmit"
