@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.example.studentarena.fragments.ProfileFragment;
 import com.example.studentarena.model.Post;
 import com.example.studentarena.ProfileDetailsActivity;
 import com.example.studentarena.R;
@@ -74,9 +75,15 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
                 public void onClick(View v) {
                     Intent i = new Intent(context, ProfileDetailsActivity.class);
                     i.putExtra("Posts", Parcels.wrap(post));
+                    i.putExtra("Position", getAdapterPosition());
                     context.startActivity(i);
                 }
             });
         }
+    }
+    public void removePost(int postPosition){
+        posts.remove(postPosition);
+        notifyItemRemoved(postPosition);
+        notifyItemRangeChanged(postPosition, ProfileFragment.adapter.getItemCount());
     }
 }
