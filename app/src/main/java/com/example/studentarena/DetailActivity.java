@@ -61,7 +61,7 @@ public class DetailActivity extends AppCompatActivity {
         tvContactInfo.setText("Contact: " + mPost.getContact());
         tvDescription.setText(mPost.getDescription());
         tvUsername.setText(mPost.getUser().getUsername());
-        tvCreatedAt.setText(GetRelativeTime.getSimpleTime(mPost.getCreatedAt()));
+        tvCreatedAt.setText("Listed "+GetRelativeTime.getSimpleTime(mPost.getCreatedAt())+ " in " + mPost.getShortAddress());
         ParseFile image = mPost.getImage();
         ParseFile userImage = mPost.getUser().getProfileImage();
         Glide.with(this).load(image.getUrl()).transform(new CenterCrop(),new RoundedCorners(50)).into(ivImage);

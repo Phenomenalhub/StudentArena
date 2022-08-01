@@ -58,17 +58,20 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         private ImageView ivImage;
         private TextView tvPrice;
         private TextView tvTitle;
+        private TextView tvShortAddress;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivImage = itemView.findViewById(R.id.ivImage);
             tvPrice = itemView.findViewById(R.id.tvPrice);
             tvTitle = itemView.findViewById(R.id.tvTitle);
+            tvShortAddress = itemView.findViewById(R.id.tvShortAddress);
         }
         public void bind(Post post) {
             // Bind the post data to the view elements
             tvTitle.setText(post.getTitle());
             tvPrice.setText("$" + post.getPrice());
+            tvShortAddress.setText(post.getShortAddress());
             ParseFile image = post.getImage();
             if (image != null) {
                 ivImage.setVisibility(View.VISIBLE);

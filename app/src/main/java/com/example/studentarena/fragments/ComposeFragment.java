@@ -217,6 +217,7 @@ public class ComposeFragment extends Fragment {
         post.setContact(etContactinfo.getEditText().getText().toString());
         post.setPrice(Double.valueOf(String.valueOf(etPrice.getEditText().getText())));
         post.setTitle(etTitle.getEditText().getText().toString());
+        post.setShortAddress(etCity.getEditText().getText().toString()+", "+ etState.getEditText().getText().toString());
         String address = etAddress.getEditText().getText().toString()+", "+ etCity.getEditText().getText().toString()+", "+ etState.getEditText().getText().toString();
         Log.i("String result", address);
         post.setAddress(address);

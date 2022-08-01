@@ -154,6 +154,7 @@ public class ProfileFragment extends Fragment {
                 // Load the taken image into a preview
                 ivProfileImage.setImageBitmap(takenImage);
                 user.setProfileImage(new ParseFile(photoFile));
+                Glide.with(getContext()).load(photoFile).centerCrop().circleCrop().into(ivProfileImage);
                 user.saveInBackground();
 
             } else {

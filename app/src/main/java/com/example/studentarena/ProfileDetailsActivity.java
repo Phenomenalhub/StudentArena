@@ -68,10 +68,10 @@ public class ProfileDetailsActivity extends AppCompatActivity {
         postPosition = getIntent().getIntExtra("Position", 0);
         tvTitle.setText(post.getTitle());
         tvPrice.setText("$" + post.getPrice());
-        tvContactInfo.setText(post.getContact());
+        tvContactInfo.setText("Contact: " +post.getContact());
         tvDescription.setText(post.getDescription());
         tvUsername.setText(post.getUser().getUsername());
-        tvCreatedAt.setText(post.getCreatedAt().toString());
+        tvCreatedAt.setText("Listed "+post.getCreatedAt().toString()+ " in " + post.getShortAddress());
         ParseFile image = post.getImage();
         ParseFile userImage = post.getUser().getProfileImage();
         Glide.with(this).load(image.getUrl()).transform(new CenterCrop(), new RoundedCorners(50)).into(ivImage);
