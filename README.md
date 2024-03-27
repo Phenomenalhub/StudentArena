@@ -123,12 +123,12 @@ Allows students access a variety of property and accessories within their circle
 | Property      | Type     | Description |
    | ------------- | -------- | ------------|
    | objectId      | String   | unique id for the user post (default field) |
-   | author        | Pointer to User| image author |
-   | image         | File     | image of the listing |
+   | receiver        | Pointer to User| A reference to the User entity that represents the message's recipient. |
+   | sender        | Pointer to User| A reference to the User entity that represents the user who sent the message. |
+   | target post       | Pointer to User| A reference to a specific Post entity that the user post is related to or targeting. |
    | userMessage  | String   | Message of the user |
-   | otherMessage   | String | Meessage of the other user |
-   | createdAt     | DateTime | date when message was sent (default field) |
-   | updatedAt     | DateTime | date when message was last updated (default field) |
+   | createdAt     | DateTime | date when the message was sent (default field) |
+   | updatedAt     | DateTime | date when the message was last updated (default field) |
    
 ### Networking
 - 
